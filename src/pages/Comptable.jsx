@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
-import { Box, Container, Drawer, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Box, Container, Drawer } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import DrawerList from '../components/Comptable/DrawerList';
 import TopBar from '../components/Comptable/TopBar';
@@ -8,16 +8,34 @@ import CustomTitle from '../shared/components/CustomTitle';
 import CustomTitleH2 from '../shared/components/CustomTitleH2';
 import ModalRubrique from '../components/Comptable/ModalRubrique';
 import { dnsPath } from '../shared/constants/constants';
-import { addRubrique } from '../apis/postFunctions';
+import { postRequest } from '../apis/postRequests';
+import CustomizedLoader from '../shared/components/CustomizedLoader';
+import PeriodForm from '../components/Comptable/PeriodForm';
+import RubriqueTable from '../components/Comptable/RubriqueTable';
+import { CustomContext } from '../shared/contexts/CustomContext';
 
 export default function Comptable() {
+
+    const { dateDebut,
+            handleDateDebut,
+            dateFin,
+            handleDateFin,
+            heureDebut,
+            handleHeureDebut,
+            heureFin,
+            handleHeureFin
+        } = useContext(CustomContext);
+    
     // const navigate = useNavigate()
     const [open, setOpen] = useState(false);
     const [designationRubrique, setDesignationRubrique] = useState('')
     const [isModal, setIsModal] = useState(false);
     const [isHandlingSubmit, setIsHandlingSubmit] = useState(false);
+    const [rubriques, setRubriques] = useState([]);
+    const [isLoadingData, setIsLoadingData] = useState(false)
 
     const handleOpenModal = () => setIsModal(true);
+
     const handleCloseModal = () => {
         setIsModal(false);
         setIsHandlingSubmit(false);
@@ -32,6 +50,33 @@ export default function Comptable() {
         setOpen(newOpen);
     };
 
+    const fetchAmountRubrique = useCallback(async () => {
+        setIsLoadingData(true)
+        const debut = dateDebut + ' ' + heureDebut;
+        const fin = dateFin + ' ' + heureFin;
+        const data = {
+            debut: debut,
+            fin: fin
+        }
+        const url = `${dnsPath}gestion_rubriques.php?montant_rubriques`;
+        try {
+            const response = await postRequest(url, data);
+            if (response) {
+                setRubriques(response);
+                setIsLoadingData(false);
+            }
+        } catch (error) {
+            console.error("erreur lors de la recupération des rubrique", error)
+        }
+    }, [dateDebut, dateFin, heureDebut, heureFin])
+
+    useEffect(() => {
+        
+        if (dateDebut && heureDebut && dateFin && heureFin)
+            fetchAmountRubrique();
+
+    }, [dateDebut, dateFin, heureDebut, heureFin, fetchAmountRubrique])
+
     const thisHandleSubmit = async (e) => {
         e.preventDefault();
         setIsHandlingSubmit(true);
@@ -41,10 +86,11 @@ export default function Comptable() {
             designation: designationRubrique
         }
         try {
-            const res = await addRubrique(url, data);
+            const res = await postRequest(url, data);
             if (res.message === 'success') {
                 console.log("Rubrique ajoutée avec succès");
             }
+            fetchAmountRubrique();
             handleCloseModal();
         } catch (error) {
             console.error("Erreur lors de l'ajout de la rubrique", error);
@@ -57,38 +103,27 @@ export default function Comptable() {
                 <DrawerList toggleDrawer={toggleDrawer} />
             </Drawer>
             <TopBar toggleDrawer={toggleDrawer} />
+            <CustomTitle text='Comptabilité' />
             <Container>
-                <CustomTitle text='Comptable' />
+                <PeriodForm
+                    dateDebut={dateDebut}
+                    dateFin={dateFin}
+                    heureDebut={heureDebut}
+                    heureFin={heureFin}
+                    handleDateDebut={handleDateDebut}
+                    handleDateFin={handleDateFin}
+                    handleHeureDebut={handleHeureDebut}
+                    handleHeureFin={handleHeureFin}
+                />
                 <CustomTitleH2>
                     Rubrique
                     <SettingsIcon onClick={handleOpenModal} role="button" />
                 </CustomTitleH2>
-                <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell className='fw-bold'>Dessert (100g serving)</TableCell>
-                                <TableCell className='fw-bold'>Calories</TableCell>
-                                <TableCell className='fw-bold'>Fat&nbsp;(g)</TableCell>
-                                <TableCell className='fw-bold'>Carbs&nbsp;(g)</TableCell>
-                                <TableCell className='fw-bold'>Protein&nbsp;(g)</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            <TableRow
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                <TableCell component="th" scope="row">
-                                    name
-                                </TableCell>
-                                <TableCell>calories</TableCell>
-                                <TableCell>fat</TableCell>
-                                <TableCell>carbs</TableCell>
-                                <TableCell>protein</TableCell>
-                            </TableRow>
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                {isLoadingData ? (
+                    <CustomizedLoader />
+                ) : (
+                    <RubriqueTable rubriques={rubriques} />
+                )}
             </Container>
             <Container maxWidth='md'>
             </Container>

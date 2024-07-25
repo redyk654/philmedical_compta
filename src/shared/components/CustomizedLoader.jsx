@@ -9,7 +9,7 @@ export default function CustomizedLoader() {
             open={true}
         >
             <h1>
-            Veuillez patienter
+            Chargement
             </h1>
             <CircularProgress color="inherit" />
         </Backdrop>

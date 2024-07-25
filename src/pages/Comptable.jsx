@@ -25,7 +25,7 @@ export default function Comptable() {
             heureFin,
             handleHeureFin
         } = useContext(CustomContext);
-    
+
     // const navigate = useNavigate()
     const [open, setOpen] = useState(false);
     const [designationRubrique, setDesignationRubrique] = useState('')
@@ -99,12 +99,9 @@ export default function Comptable() {
     
     return (
         <Box sx={{ padding: 0 }}>
-            <Drawer open={open} onClose={toggleDrawer(false)}>
-                <DrawerList toggleDrawer={toggleDrawer} />
-            </Drawer>
             <TopBar toggleDrawer={toggleDrawer} />
-            <CustomTitle text='Comptabilité' />
             <Container>
+                <CustomTitle text='Comptabilité' />
                 <PeriodForm
                     dateDebut={dateDebut}
                     dateFin={dateFin}
@@ -125,8 +122,6 @@ export default function Comptable() {
                     <RubriqueTable rubriques={rubriques} />
                 )}
             </Container>
-            <Container maxWidth='md'>
-            </Container>
             <ModalRubrique
                 isModal={isModal}
                 handleCloseModal={handleCloseModal}
@@ -135,6 +130,9 @@ export default function Comptable() {
                 thisHandleSubmit={thisHandleSubmit}
                 isHandlingSubmit={isHandlingSubmit}
             />
+            <Drawer open={open} onClose={toggleDrawer(false)}>
+                <DrawerList toggleDrawer={toggleDrawer} />
+            </Drawer>
         </Box>
     );
 }

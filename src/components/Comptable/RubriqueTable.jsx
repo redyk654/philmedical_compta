@@ -28,7 +28,7 @@ const RubriqueTable = ({ rubriques }) => {
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                             <TableCell
-                                id={row.id}
+                                id={`${row.id}-${row.rubrique}`}
                                 component="th"
                                 scope="row"
                                 role='button'

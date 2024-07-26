@@ -3,7 +3,7 @@ import React from 'react'
 import RubriqueForm from './RubriqueForm'
 import { modalStyle } from '../../shared/styles/CustomStyles'
 
-export default function ModalRubrique({ isModal, handleCloseModal, designationRubrique, handleChangeRubrique, thisHandleSubmit, isHandlingSubmit }) {
+export default function ModalRubrique({ title, isModal, handleCloseModal, designationRubrique, handleChangeRubrique, thisHandleSubmit, isHandlingSubmit }) {
   return (
     <Modal
         open={isModal}
@@ -13,7 +13,7 @@ export default function ModalRubrique({ isModal, handleCloseModal, designationRu
     >
         <Box sx={modalStyle}>
             <Typography className='fw-bold' variant="h6">
-                Nouvelle rubrique
+                {title}
             </Typography>
             <RubriqueForm
                 designationRubrique={designationRubrique}

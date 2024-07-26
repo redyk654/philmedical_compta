@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
 import { Box, Container, Drawer } from '@mui/material';
-import SettingsIcon from '@mui/icons-material/Settings';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DrawerList from '../components/Comptable/DrawerList';
 import TopBar from '../components/Comptable/TopBar';
 import CustomTitle from '../shared/components/CustomTitle';
@@ -32,7 +32,16 @@ export default function Comptable() {
     const [isModal, setIsModal] = useState(false);
     const [isHandlingSubmit, setIsHandlingSubmit] = useState(false);
     const [rubriques, setRubriques] = useState([]);
-    const [isLoadingData, setIsLoadingData] = useState(false)
+    const [isLoadingData, setIsLoadingData] = useState(false);
+    const [isModalGrandGroupe, setIsModalGrandGroupe] = useState(false);
+
+    const handleOpenModalGrandGroupe = () => setIsModalGrandGroupe(true);
+
+    const handleCloseModalGrandGroupe = () => {
+        setIsModalGrandGroupe(false);
+        setIsHandlingSubmit(false);
+        setDesignationRubrique('');
+    }
 
     const handleOpenModal = () => setIsModal(true);
 
@@ -77,7 +86,7 @@ export default function Comptable() {
 
     }, [dateDebut, dateFin, heureDebut, heureFin, fetchAmountRubrique])
 
-    const thisHandleSubmit = async (e) => {
+    const ajouterNouvelleRubrique = async (e) => {
         e.preventDefault();
         setIsHandlingSubmit(true);
         // Ajouter la rubrique
@@ -94,6 +103,25 @@ export default function Comptable() {
             handleCloseModal();
         } catch (error) {
             console.error("Erreur lors de l'ajout de la rubrique", error);
+        }
+    }
+
+    const ajouterNouveauGrandGroupe = async (e) => {
+        e.preventDefault();
+        setIsHandlingSubmit(true);
+        // Ajouter le grand groupe
+        const url = `${dnsPath}gestion_rubriques.php?add_grand_groupe`;
+        const data = {
+            designation: designationRubrique
+        }
+        try {
+            const res = await postRequest(url, data);
+            if (res.message === 'success') {
+                console.log("Grand groupe ajouté avec succès");
+            }
+            handleCloseModalGrandGroupe();
+        } catch (error) {
+            console.error("Erreur lors de l'ajout du grand groupe", error);
         }
     }
     
@@ -114,20 +142,42 @@ export default function Comptable() {
                 />
                 <CustomTitleH2>
                     Rubrique
-                    <SettingsIcon onClick={handleOpenModal} role="button" />
+                    <AddCircleIcon
+                        onClick={handleOpenModal}
+                        role="button"
+                        fontSize='medium'
+                    />
                 </CustomTitleH2>
                 {isLoadingData ? (
                     <CustomizedLoader />
                 ) : (
                     <RubriqueTable rubriques={rubriques} />
                 )}
+                <CustomTitleH2>
+                    Grand Groupe
+                    <AddCircleIcon
+                        onClick={handleOpenModalGrandGroupe}
+                        role="button"
+                        fontSize='medium'
+                    />
+                </CustomTitleH2>
             </Container>
             <ModalRubrique
+                title="Ajouter une rubrique"
                 isModal={isModal}
                 handleCloseModal={handleCloseModal}
                 designationRubrique={designationRubrique}
                 handleChangeRubrique={handleChangeRubrique}
-                thisHandleSubmit={thisHandleSubmit}
+                thisHandleSubmit={ajouterNouvelleRubrique}
+                isHandlingSubmit={isHandlingSubmit}
+            />
+            <ModalRubrique
+                title="Ajouter un grand groupe"
+                isModal={isModalGrandGroupe}
+                handleCloseModal={handleCloseModalGrandGroupe}
+                designationRubrique={designationRubrique}
+                handleChangeRubrique={handleChangeRubrique}
+                thisHandleSubmit={ajouterNouveauGrandGroupe}
                 isHandlingSubmit={isHandlingSubmit}
             />
             <Drawer open={open} onClose={toggleDrawer(false)}>

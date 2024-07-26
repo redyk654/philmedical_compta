@@ -1,31 +1,55 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import CustomTitle from '../shared/components/CustomTitle';
-import { Button, Card, CardHeader, Checkbox, Container, Divider, Grid, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-
-function not(a, b) {
-  return a.filter((value) => b.indexOf(value) === -1);
-}
-
-function intersection(a, b) {
-  return a.filter((value) => b.indexOf(value) !== -1);
-}
-
-function union(a, b) {
-  return [...a, ...not(b, a)];
-}
+import { Button, Container, Grid } from '@mui/material';
+import { dnsPath } from '../shared/constants/constants';
+import { getRequest } from '../apis/getRequests';
+import { intersection, not, union } from '../shared/functions/functions';
+import CustomList from '../components/EditRubrique/CustomList';
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import { postRequest } from '../apis/postRequests';
+import CustomizedLoader from '../shared/components/CustomizedLoader';
+import CustomButton from '../shared/components/CustomButton';
 
 export default function EditRubrique() {
 
     const { rubriqueId } = useParams();
-    const rubrique = rubriqueId.split('-');
+    const rubriqueInfo = rubriqueId.split('-');
 
-    const [checked, setChecked] = React.useState([]);
-    const [left, setLeft] = React.useState([0, 1, 2, 3]);
-    const [right, setRight] = React.useState([4, 5, 6, 7]);
+    const [checked, setChecked] = useState([]);
+    const [left, setLeft] = useState([]);
+    const [right, setRight] = useState([]);
+    const [listeDesActes, setListeDesActes] = useState([]);
+    const [actesModifes, setActesModifes] = useState([]);
+    const [isLoadingData, setIsLoadingData] = useState(false);
+    const [isHandlingSubmit, setIsHandlingSubmit] = useState(false);
 
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
+
+    useEffect(() => {
+        fetchListeActes();
+    }, []);
+
+    const fetchListeActes = async () => {
+        setIsLoadingData(true);
+        const url = `${dnsPath}recuperer_services.php`;
+        try {
+            const data = await getRequest(url);
+            setListeDesActes(data);
+            initialiserListes(data);
+            setIsLoadingData(false);
+        } catch (error) {
+            setIsLoadingData(false);
+            console.error('Error fetching actes:', error);
+        }
+    }
+
+    const initialiserListes = (listeActes) => {
+        setLeft(listeActes.filter(acte => parseInt(acte.id_rubrique) === parseInt(rubriqueInfo[0])));
+        setRight(listeActes.filter(acte => parseInt(acte.id_rubrique) !== parseInt(rubriqueInfo[0])));
+    }
 
     const handleToggle = (value) => () => {
         const currentIndex = checked.indexOf(value);
@@ -51,82 +75,85 @@ export default function EditRubrique() {
     };
 
     const handleCheckedRight = () => {
+        changeRubrique(leftChecked, false);
         setRight(right.concat(leftChecked));
         setLeft(not(left, leftChecked));
         setChecked(not(checked, leftChecked));
     };
 
     const handleCheckedLeft = () => {
+        changeRubrique(rightChecked, true);
         setLeft(left.concat(rightChecked));
         setRight(not(right, rightChecked));
         setChecked(not(checked, rightChecked));
     };
 
-    const customList = (title, items) => (
-        <Card>
-            <CardHeader
-                sx={{ px: 2, py: 1 }}
-                avatar={
-                    <Checkbox
-                        onClick={handleToggleAll(items)}
-                        checked={numberOfChecked(items) === items.length && items.length !== 0}
-                        indeterminate={
-                            numberOfChecked(items) !== items.length && numberOfChecked(items) !== 0
-                        }
-                        disabled={items.length === 0}
-                        inputProps={{
-                            'aria-label': 'all items selected',
-                        }}
-                    />
-                }
-                title={title}
-                subheader={`${numberOfChecked(items)}/${items.length} selected`}
-            />
-            <Divider />
-            <List
-                sx={{
-                    width: 300,
-                    height: 280,
-                    bgcolor: 'background.paper',
-                    overflow: 'auto',
-                }}
-                dense
-                component="div"
-                role="list"
-            >
-            {items.map((value) => {
-                const labelId = `transfer-list-all-item-${value}-label`;
+    const changeRubrique = (liste, isLeft) => {
+        let actes = [];
+        if (isLeft) {
+            actes = liste.map(acte => ({
+                id: acte.id,
+                id_rubrique: parseInt(rubriqueInfo[0]),
+                designation: acte.designation,
+                prix: acte.prix
+            }));
+        } else {
+            actes = liste.map(acte => ({
+                id: acte.id,
+                id_rubrique: 0,
+                designation: acte.designation,
+                prix: acte.prix
+            }));
+        }
 
-                return (
-                <ListItemButton
-                    key={value}
-                    role="listitem"
-                    onClick={handleToggle(value)}
-                >
-                    <ListItemIcon>
-                    <Checkbox
-                        checked={checked.indexOf(value) !== -1}
-                        tabIndex={-1}
-                        disableRipple
-                        inputProps={{
-                        'aria-labelledby': labelId,
-                        }}
-                    />
-                    </ListItemIcon>
-                    <ListItemText id={labelId} primary={`List item ${value + 1}`} />
-                </ListItemButton>
-                );
-            })}
-            </List>
-        </Card>
-    );
+        const removedDoublons = actesModifes.filter(acte =>
+                                    actes.findIndex(a =>
+                                        parseInt(a.id) === parseInt(acte.id)) === -1);
+        const interMediaire = [...removedDoublons, ...actes];
+        const removedActesNonModifies = interMediaire.filter(acte =>
+                                            listeDesActes.findIndex(a =>
+                                                parseInt(a.id) === parseInt(acte.id) && parseInt(a.id_rubrique) === parseInt(acte.id_rubrique)) === -1);
+        setActesModifes(removedActesNonModifies);
+    }
+
+    const updateRubrique = async () => {
+        setIsHandlingSubmit(true);
+        const url = `${dnsPath}gestion_rubriques.php?update_rubrique`;
+        const data = {
+            actes: actesModifes
+        }
+        try {
+            const res = await postRequest(url, data);
+            if (res.message === 'success') {
+                setActesModifes([]);
+                setIsHandlingSubmit(false);
+                console.log("Rubrique modifiée avec succès");
+            }
+        } catch (error) {
+            setIsHandlingSubmit(false);
+            console.error("Erreur lors de la modification de la rubrique", error);
+        }
+    }
+
+    const buttonIsDisabled = () => {
+        return actesModifes.length === 0 || isHandlingSubmit;
+    }
 
   return (
     <Container>
-        <CustomTitle text={`Editer ${rubrique[1]}`} />
-
+        <CustomTitle text={`Editer ${rubriqueInfo[1]}`} />
+        {isLoadingData && <CustomizedLoader />}
         <Grid container spacing={2} justifyContent="center" alignItems="center">
-            <Grid item>{customList(`${rubrique[1]}`, left)}</Grid>
+            <Grid item>
+                <CustomList
+                    title={rubriqueInfo[1]}
+                    items={left}
+                    checked={checked}
+                    handleToggle={handleToggle}
+                    handleToggleAll={handleToggleAll}
+                    numberOfChecked={numberOfChecked}
+                />
+            </Grid>
             <Grid item>
                 <Grid container direction="column" alignItems="center">
                     <Button
@@ -137,7 +164,7 @@ export default function EditRubrique() {
                         disabled={leftChecked.length === 0}
                         aria-label="move selected right"
                     >
-                        &gt;
+                        <KeyboardArrowRightIcon />
                     </Button>
                     <Button
                         sx={{ my: 0.5 }}
@@ -147,12 +174,29 @@ export default function EditRubrique() {
                         disabled={rightChecked.length === 0}
                         aria-label="move selected left"
                     >
-                        &lt;
+                        <KeyboardArrowLeftIcon />
                     </Button>
                 </Grid>
             </Grid>
-            <Grid item>{customList('Toutes les rubriques', right)}</Grid>
+            <Grid item>
+                <CustomList
+                    title="Toutes les rubriques"
+                    items={right}
+                    checked={checked}
+                    handleToggle={handleToggle}
+                    handleToggleAll={handleToggleAll}
+                    numberOfChecked={numberOfChecked}
+                />
+            </Grid>
         </Grid>
+        <Container className='d-flex justify-content-center'>
+            <CustomButton
+                title="Enregistrer les modifications"
+                updateRubrique={updateRubrique}
+                buttonIsDisabled={buttonIsDisabled}
+                isHandlingSubmit={isHandlingSubmit}
+            />
+        </Container>
     </Container>
   );
 }

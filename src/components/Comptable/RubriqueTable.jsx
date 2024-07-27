@@ -14,10 +14,10 @@ const RubriqueTable = ({ rubriques }) => {
 
     return (
         <TableContainer component={Paper} sx={{ maxWidth: 650 }}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <Table sx={{ minWidth: 650 }} aria-label="rubrique table">
                 <TableHead>
                     <TableRow>
-                        <TableCell className='fw-bold'>Nom rubrique</TableCell>
+                        <TableCell className='fw-bold'>Nom Rubrique</TableCell>
                         <TableCell className='fw-bold'>Montant</TableCell>
                     </TableRow>
                 </TableHead>

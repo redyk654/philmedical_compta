@@ -9,7 +9,7 @@ const RubriqueTable = ({ rubriques }) => {
 
     const goToEditRubrique = (e) => {
         const rubriqueId = e.target.id
-        navigate(`/comptabilite/${rubriqueId}`)
+        navigate(`/comptabilite/editrubrique/${rubriqueId}`)
     }
 
     return (

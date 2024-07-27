@@ -1,23 +1,41 @@
 import { Box, Collapse, IconButton, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
-import React, { Fragment } from 'react'
+import React, { Fragment, useContext } from 'react'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { formaterNombre } from '../../shared/functions/functions';
+import { useNavigate } from 'react-router-dom';
+import { CustomContext } from '../../shared/contexts/CustomContext';
 
 export default function CollapsedRow({ row, isOpenCollapse, handleCollapse }) {
+
+    const { handleGrandGroupeData } = useContext(CustomContext);
+    const navigate = useNavigate();
+
+    const goToEditGrandGroupe = (e) => {
+        handleGrandGroupeData(row)
+        const grandGroupeId = e.target.id
+        navigate(`/comptabilite/editgrandgroupe/${grandGroupeId}`)
+    }
+
   return (
     <Fragment>
         <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
             <TableCell>
-            <IconButton
-                aria-label="expand row"
-                size="small"
-                onClick={handleCollapse}
-            >
-                {isOpenCollapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-            </IconButton>
+                <IconButton
+                    aria-label="expand row"
+                    size="small"
+                    onClick={handleCollapse}
+                >
+                    {isOpenCollapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                </IconButton>
             </TableCell>
-            <TableCell component="th" scope="row">
+            <TableCell
+                component="th"
+                scope="row"
+                id={`${row.id}-${row.designation}`}
+                role='button'
+                onClick={goToEditGrandGroupe}
+            >
                 {row.designation}
             </TableCell>
             <TableCell>{row.total}</TableCell>
@@ -27,7 +45,7 @@ export default function CollapsedRow({ row, isOpenCollapse, handleCollapse }) {
                 <Collapse in={isOpenCollapse} timeout="auto" unmountOnExit>
                     <Box sx={{ margin: 1 }}>
                         <Typography variant="h6" gutterBottom component="div">
-                            Rubriqes associées
+                            Rubriques associées
                         </Typography>
                         <Table size="small" aria-label="rubriques collapsed">
                             <TableHead>

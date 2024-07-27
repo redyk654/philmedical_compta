@@ -11,6 +11,7 @@ const CustomProvider = (props) => {
     const [dateFin, setDateFin] = useState('');
     const [heureDebut, setHeureDebut] = useState('');
     const [heureFin, setHeureFin] = useState('');
+    const [grandGroupeData, setGrandGroupeData] = useState([]);
 
     const handleDateDebut = (e) => {
         setDateDebut(e.target.value)
@@ -27,9 +28,13 @@ const CustomProvider = (props) => {
     const handleHeureFin = (e) => {
         setHeureFin(e.target.value)
     }
+
+    const handleGrandGroupeData = (data) => {
+        setGrandGroupeData(data)
+    }
     
     return (
-        <CustomContext.Provider value={{dateDebut, handleDateDebut, dateFin, handleDateFin, heureDebut, handleHeureDebut, heureFin, handleHeureFin}}>
+        <CustomContext.Provider value={{dateDebut, handleDateDebut, dateFin, handleDateFin, heureDebut, handleHeureDebut, heureFin, handleHeureFin, grandGroupeData, handleGrandGroupeData}}>
             {props.children}
         </CustomContext.Provider>
     )

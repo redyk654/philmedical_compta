@@ -192,7 +192,7 @@ export default function EditRubrique() {
         <Container className='d-flex justify-content-center'>
             <CustomButton
                 title="Enregistrer les modifications"
-                updateRubrique={updateRubrique}
+                handleClick={updateRubrique}
                 buttonIsDisabled={buttonIsDisabled}
                 isHandlingSubmit={isHandlingSubmit}
             />

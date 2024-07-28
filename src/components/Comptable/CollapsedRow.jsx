@@ -61,7 +61,7 @@ export default function CollapsedRow({ row, isOpenCollapse, handleCollapse }) {
                                     <TableCell component="th" scope="row">
                                         {rubrique.designation}
                                     </TableCell>
-                                    <TableCell>{rubrique.pourcentage}</TableCell>
+                                    <TableCell>{rubrique.pourcentage + '%'}</TableCell>
                                     <TableCell>
                                         {formaterNombre(rubrique.montant)}
                                     </TableCell>

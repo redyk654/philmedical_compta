@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import CustomTitle from '../shared/components/CustomTitle';
-import { Button, Container, Grid } from '@mui/material';
+import { Box, Button, Container, Grid, Link, Modal, TextField, Typography } from '@mui/material';
 import { dnsPath } from '../shared/constants/constants';
 import { getRequest } from '../apis/getRequests';
 import { intersection, not, union } from '../shared/functions/functions';
@@ -11,6 +11,8 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { postRequest } from '../apis/postRequests';
 import CustomizedLoader from '../shared/components/CustomizedLoader';
 import CustomButton from '../shared/components/CustomButton';
+import CustomTitleH2 from '../shared/components/CustomTitleH2';
+import { modalStyle } from '../shared/styles/CustomStyles';
 
 export default function EditRubrique() {
 
@@ -24,13 +26,36 @@ export default function EditRubrique() {
     const [actesModifes, setActesModifes] = useState([]);
     const [isLoadingData, setIsLoadingData] = useState(false);
     const [isHandlingSubmit, setIsHandlingSubmit] = useState(false);
+    const [searchLeft, setSearchLeft] = useState('');
+    const [searchRight, setSearchRight] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
 
+    const filteredLeft = left.filter(acte => acte.designation.toLowerCase().includes(searchLeft.toLowerCase()));
+    const filteredRight = right.filter(acte => acte.designation.toLowerCase().includes(searchRight.toLowerCase()));
+
+    const handleOpenModal = (e) => {
+        e.preventDefault();
+        setIsModalOpen(true);
+    }
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    }
+
     useEffect(() => {
         fetchListeActes();
     }, []);
+
+    const handleSearch = (e, isLeft) => {
+        if (isLeft) {
+            setSearchLeft(e.target.value);
+        } else {
+            setSearchRight(e.target.value);
+        }
+    }
 
     const fetchListeActes = async () => {
         setIsLoadingData(true);
@@ -145,9 +170,18 @@ export default function EditRubrique() {
         {isLoadingData && <CustomizedLoader />}
         <Grid container spacing={2} justifyContent="center" alignItems="center">
             <Grid item>
+                <div className='mb-3'>
+                    <TextField
+                        placeholder="Rechercher"
+                        fullWidth
+                        variant="outlined"
+                        value={searchLeft}
+                        onChange={(e) => handleSearch(e, true)}
+                    />
+                </div>
                 <CustomList
                     title={rubriqueInfo[1]}
-                    items={left}
+                    items={filteredLeft}
                     checked={checked}
                     handleToggle={handleToggle}
                     handleToggleAll={handleToggleAll}
@@ -179,9 +213,21 @@ export default function EditRubrique() {
                 </Grid>
             </Grid>
             <Grid item>
+                <div className='mb-3'>
+                    <TextField
+                        placeholder="Rechercher"
+                        fullWidth
+                        variant="outlined"
+                        value={searchRight}
+                        onChange={(e) => handleSearch(e, false)}
+                    />
+                </div>
+                <Link component='a' href='#' underline='none' onClick={handleOpenModal}>
+                    Ajouter un acte
+                </Link>
                 <CustomList
                     title="Toutes les rubriques"
-                    items={right}
+                    items={filteredRight}
                     checked={checked}
                     handleToggle={handleToggle}
                     handleToggleAll={handleToggleAll}
@@ -197,6 +243,21 @@ export default function EditRubrique() {
                 isHandlingSubmit={isHandlingSubmit}
             />
         </Container>
+        <Modal
+            open={isModalOpen}
+            onClose={handleCloseModal}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+        >
+            <Box sx={modalStyle}>
+                <CustomTitleH2>
+                    Ajouter un acte
+                </CustomTitleH2>
+                <Typography variant='body1'>
+                    Cette fonctionnalité n'est pas encore disponible.
+                </Typography>
+            </Box>
+        </Modal>
     </Container>
   );
 }

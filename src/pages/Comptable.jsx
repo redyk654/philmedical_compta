@@ -110,8 +110,11 @@ export default function Comptable() {
         try {
             const response = await postRequest(url, data);
             if (response) {
+                const result = await fetchAmountPharmacie(data);
+                const processedData = await calculMontantPharmacie(response, result);
+                // console.log("processedData", processedData);
                 fetchGrandGroupe(response);
-                setRubriques(response);
+                setRubriques(processedData);
                 setIsLoadingData(false);
             }
         } catch (error) {
@@ -125,6 +128,29 @@ export default function Comptable() {
             fetchAmountRubrique();
 
     }, [dateDebut, dateFin, heureDebut, heureFin, fetchAmountRubrique])
+
+    const calculMontantPharmacie = async (rubrique, montant) => {
+        const filteredRubrique = rubrique.find(item => item.rubrique.toLowerCase() === 'pharmacie');
+        if (filteredRubrique) {
+            if (montant.montant) {
+                filteredRubrique.montant = parseInt(montant.montant);
+            } else {
+                filteredRubrique.montant = 0;
+            }
+        }
+
+        const rubriqueWithoutPharmacie = rubrique.filter(item => item.rubrique.toLowerCase() !== 'pharmacie');
+        return [...rubriqueWithoutPharmacie, filteredRubrique];
+    }
+
+    const fetchAmountPharmacie = async (data) => {
+        const url = `${dnsPath}gestion_rubriques.php?montant_pharmacie`;
+        try {
+            return await postRequest(url, data);
+        } catch (error) {
+            console.error("Erreur lors de la récupération du montant pharmacie", error);
+        }
+    }
 
     const ajouterNouvelleRubrique = async (e) => {
         e.preventDefault();

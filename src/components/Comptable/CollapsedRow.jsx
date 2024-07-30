@@ -19,7 +19,7 @@ export default function CollapsedRow({ row, isOpenCollapse, handleCollapse }) {
 
   return (
     <Fragment>
-        <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+        <TableRow sx={{ '& > *': { borderBottom: 'unset' }}}>
             <TableCell>
                 <IconButton
                     aria-label="expand row"
@@ -51,7 +51,7 @@ export default function CollapsedRow({ row, isOpenCollapse, handleCollapse }) {
                         <Typography variant="h6" gutterBottom component="div">
                             Rubriques associées
                         </Typography>
-                        <Table size="small" aria-label="rubriques collapsed">
+                        <Table size="small" sx={{backgroundColor: 'dark.light'}}>
                             <TableHead>
                             <TableRow>
                                 <TableCell className='fw-bold'>Nom rubrique</TableCell>

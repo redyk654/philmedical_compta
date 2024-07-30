@@ -38,7 +38,11 @@ export default function CollapsedRow({ row, isOpenCollapse, handleCollapse }) {
             >
                 {row.designation}
             </TableCell>
-            <TableCell>{row.total}</TableCell>
+            <TableCell>
+                <strong>
+                    {formaterNombre(row.total)}
+                </strong>
+            </TableCell>
         </TableRow>
         <TableRow>
             <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -63,7 +67,9 @@ export default function CollapsedRow({ row, isOpenCollapse, handleCollapse }) {
                                     </TableCell>
                                     <TableCell>{rubrique.pourcentage + '%'}</TableCell>
                                     <TableCell>
-                                        {formaterNombre(rubrique.montant)}
+                                        <strong>
+                                            {formaterNombre(rubrique.montant)}
+                                        </strong>
                                     </TableCell>
                                 </TableRow>
                             ))}

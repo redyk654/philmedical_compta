@@ -36,7 +36,11 @@ const RubriqueTable = ({ rubriques }) => {
                             >
                                 {row.rubrique}
                             </TableCell>
-                            <TableCell>{formaterNombre(row.montant)}</TableCell>
+                            <TableCell>
+                                <strong>
+                                    {formaterNombre(row.montant)}
+                                </strong>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

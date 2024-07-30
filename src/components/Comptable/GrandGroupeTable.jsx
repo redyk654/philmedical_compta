@@ -20,7 +20,7 @@ export default function GrandGroupeTable({ grandGoupes }) {
             <TableRow>
                 <TableCell />
                 <TableCell className='fw-bold'>Nom Grand Groupe</TableCell>
-                <TableCell className='fw-bold'>Montant</TableCell>
+                <TableCell className='fw-bold'>Total</TableCell>
             </TableRow>
             </TableHead>
             <TableBody>

@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
-import { Box, Container, Drawer } from '@mui/material';
+import { Box, Container, Drawer, IconButton } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DrawerList from '../components/Comptable/DrawerList';
 import TopBar from '../components/Comptable/TopBar';
@@ -183,11 +183,11 @@ export default function Comptable() {
                 />
                 <CustomTitleH2>
                     Rubrique
-                    <AddCircleIcon
-                        onClick={handleOpenModal}
-                        role="button"
-                        fontSize='medium'
-                    />
+                    <IconButton onClick={handleOpenModal}>
+                        <AddCircleIcon
+                            fontSize='medium'
+                        />
+                    </IconButton>
                 </CustomTitleH2>
                 {isLoadingData ? (
                     <CustomizedLoader />
@@ -196,11 +196,11 @@ export default function Comptable() {
                 )}
                 <CustomTitleH2>
                     Grand Groupe
-                    <AddCircleIcon
-                        onClick={handleOpenModalGrandGroupe}
-                        role="button"
-                        fontSize='medium'
-                    />
+                    <IconButton onClick={handleOpenModalGrandGroupe}>
+                        <AddCircleIcon
+                            fontSize='medium'
+                        />
+                    </IconButton>
                 </CustomTitleH2>
                 <GrandGroupeTable
                     grandGoupes={grandGoupes}

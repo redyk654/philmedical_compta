@@ -2,7 +2,7 @@ import React from 'react'
 import DisplayActes from './DisplayActes'
 import { Card, CardHeader, Checkbox, Divider } from '@mui/material'
 
-export default function CustomList({ title, items, checked, handleToggle, handleToggleAll, numberOfChecked }) {
+export default function CustomList({ title, items, checked, handleToggle, handleToggleAll, numberOfChecked, deleteActe }) {
   return (
     <Card>
         <CardHeader
@@ -28,6 +28,7 @@ export default function CustomList({ title, items, checked, handleToggle, handle
             items={items}
             checked={checked}
             handleToggle={handleToggle}
+            deleteActe={deleteActe}
         />
     </Card>
   )

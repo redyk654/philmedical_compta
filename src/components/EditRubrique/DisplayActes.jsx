@@ -1,12 +1,13 @@
 import { Checkbox, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 import React from 'react'
 import { extraireCode } from '../../shared/functions/functions';
+import { Delete } from '@mui/icons-material';
 
-export default function DisplayActes({ items, checked, handleToggle }) {
+export default function DisplayActes({ items, checked, handleToggle, deleteActe }) {
   return (
     <List
         sx={{
-            width: 375,
+            width: 415,
             height: 280,
             bgcolor: 'background.paper',
             overflow: 'auto',
@@ -36,7 +37,10 @@ export default function DisplayActes({ items, checked, handleToggle }) {
                     </ListItemIcon>
                     <ListItemText id={labelId} primary={`${extraireCode(item.designation)}`} />
                     <ListItemIcon>
-                        <ListItemText id={labelId} primary={`${item.prix}`} />
+                        <ListItemText id={labelId} primary={`(${item.prix})`} />
+                    </ListItemIcon>
+                    <ListItemIcon onClick={() => deleteActe(item.id)}>
+                        <Delete />
                     </ListItemIcon>
                 </ListItemButton>
             );

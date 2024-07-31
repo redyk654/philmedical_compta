@@ -197,6 +197,18 @@ export default function EditRubrique() {
         }
     }
 
+    const deleteActe = async (id) => {
+        const url = `${dnsPath}gestion_rubriques.php?delete_acte&id=${id}`;
+        try {
+            const res = await postRequest(url);
+            if (res.message === 'success') {
+                fetchListeActes();
+            }
+        } catch (error) {
+            console.error('Error deleting acte:', error);
+        }
+    }
+
     const buttonIsDisabled = () => {
         return actesModifes.length === 0 || isHandlingSubmit;
     }
@@ -223,6 +235,7 @@ export default function EditRubrique() {
                     handleToggle={handleToggle}
                     handleToggleAll={handleToggleAll}
                     numberOfChecked={numberOfChecked}
+                    deleteActe={deleteActe}
                 />
             </Grid>
             <Grid item>
@@ -269,6 +282,7 @@ export default function EditRubrique() {
                     handleToggle={handleToggle}
                     handleToggleAll={handleToggleAll}
                     numberOfChecked={numberOfChecked}
+                    deleteActe={deleteActe}
                 />
             </Grid>
         </Grid>

@@ -35,6 +35,9 @@ export default function DisplayActes({ items, checked, handleToggle }) {
                         />
                     </ListItemIcon>
                     <ListItemText id={labelId} primary={`${extraireCode(item.designation)}`} />
+                    <ListItemIcon>
+                        <ListItemText id={labelId} primary={`${item.prix}`} />
+                    </ListItemIcon>
                 </ListItemButton>
             );
         })}

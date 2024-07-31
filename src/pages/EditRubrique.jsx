@@ -13,6 +13,7 @@ import CustomizedLoader from '../shared/components/CustomizedLoader';
 import CustomButton from '../shared/components/CustomButton';
 import CustomTitleH2 from '../shared/components/CustomTitleH2';
 import { modalStyle } from '../shared/styles/CustomStyles';
+import LoginButton from '../shared/components/LoginButton';
 
 export default function EditRubrique() {
 
@@ -29,12 +30,46 @@ export default function EditRubrique() {
     const [searchLeft, setSearchLeft] = useState('');
     const [searchRight, setSearchRight] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [newActe, setNewActe] = useState({ designation: '', prix: 0 });
+    const [helperError, setHelperError] = useState('');
 
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
 
     const filteredLeft = left.filter(acte => acte.designation.toLowerCase().includes(searchLeft.toLowerCase()));
     const filteredRight = right.filter(acte => acte.designation.toLowerCase().includes(searchRight.toLowerCase()));
+
+    const handleChangeDesignation = (e) => {
+        setNewActe({ ...newActe, designation: e.target.value });
+    }
+
+    const handleChangePrix = (e) => {
+        setNewActe({ ...newActe, prix: e.target.value });
+    }
+
+    const addNewActe = async (e) => {
+        setHelperError('');
+        e.preventDefault();
+        const acte = {
+            designation: newActe.designation,
+            prix: newActe.prix,
+            id_rubrique: 0
+        }
+
+        const url = `${dnsPath}gestion_rubriques.php?add_acte`;
+        try {
+            const res = await postRequest(url, acte);
+            if (res.message === 'success') {
+                fetchListeActes();
+                setNewActe({ designation: '', prix: 0 });
+                handleCloseModal();
+            } else {
+                setHelperError("Cet acte existe déjà");
+            }
+        } catch (error) {
+            console.error('Error adding acte:', error);
+        }
+    }
 
     const handleOpenModal = (e) => {
         e.preventDefault();
@@ -43,6 +78,8 @@ export default function EditRubrique() {
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
+        setNewActe({ designation: '', prix: 0 });
+        setHelperError('');
     }
 
     useEffect(() => {
@@ -253,9 +290,44 @@ export default function EditRubrique() {
                 <CustomTitleH2>
                     Ajouter un acte
                 </CustomTitleH2>
-                <Typography variant='body1'>
-                    Cette fonctionnalité n'est pas encore disponible.
-                </Typography>
+                <form onSubmit={addNewActe}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <TextField
+                                required
+                                value={newActe.designation}
+                                onChange={handleChangeDesignation}
+                                id="designation"
+                                name='designation'
+                                label="Designation"
+                                type="text"
+                                variant="outlined"
+                                autoComplete='off'
+                                error={helperError !== ''}
+                                helperText={helperError}
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                required
+                                value={newActe.prix}
+                                onChange={handleChangePrix}
+                                id="prix"
+                                name='prix'
+                                label="Prix"
+                                type="number"
+                                variant="outlined"
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <LoginButton isHandlingSubmit={isHandlingSubmit}>
+                                Ajouter l'acte
+                            </LoginButton>
+                        </Grid>
+                    </Grid>
+                </form>
             </Box>
         </Modal>
     </Container>

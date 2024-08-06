@@ -38,7 +38,7 @@ const RubriqueTable = ({ rubriques }) => {
                             </TableCell>
                             <TableCell>
                                 <strong>
-                                    {formaterNombre(row.montant)}
+                                    {formaterNombre(parseInt(row.montant))}
                                 </strong>
                             </TableCell>
                         </TableRow>

@@ -14,6 +14,7 @@ import CustomButton from '../shared/components/CustomButton';
 import CustomTitleH2 from '../shared/components/CustomTitleH2';
 import { modalStyle } from '../shared/styles/CustomStyles';
 import LoginButton from '../shared/components/LoginButton';
+import BackToHome from '../shared/components/BackToHome';
 
 export default function EditRubrique() {
 
@@ -215,6 +216,9 @@ export default function EditRubrique() {
 
   return (
     <Container>
+        <div className='p-2'>
+            <BackToHome />
+        </div>
         <CustomTitle text={`Editer ${rubriqueInfo[1]}`} />
         {isLoadingData && <CustomizedLoader />}
         <Grid container spacing={2} justifyContent="center" alignItems="center">

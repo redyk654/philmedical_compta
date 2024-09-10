@@ -10,6 +10,7 @@ import { dnsPath } from '../shared/constants/constants';
 import { modalStyle } from '../shared/styles/CustomStyles';
 import { getRequest } from '../apis/getRequests';
 import LoginButton from '../shared/components/LoginButton';
+import BackToHome from '../shared/components/BackToHome';
 
 export default function EditGrandGroupe() {
 
@@ -130,6 +131,9 @@ export default function EditGrandGroupe() {
 
   return (
     <Container>
+        <div className='p-2'>
+            <BackToHome />
+        </div>
         <CustomTitle text={`Editer le grand groupe ${grandGroupeData.designation}`} />
         <TableContainer component={Paper} sx={{ maxWidth: 850 }}>
             <Box sx={{ margin: 1 }}>

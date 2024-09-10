@@ -30,7 +30,7 @@ export default function SignIn() {
                 } else {
                     const result = JSON.parse(req.responseText);
                     if (result.rol.toLowerCase() === "compta") {
-                        navigate('/comptabilite');
+                        navigate('/philmedical/compta/acceuil');
                     } else {
                         registerFormRef.current.setHelperTextEmail("identifiant ou mot de passe incorrect");
                         registerFormRef.current.setHelperTextPassword("identifiant ou mot de passe incorrect");
@@ -55,7 +55,6 @@ export default function SignIn() {
         className='pt-4'
     >
       <div>
-        <BackToHome />
         <h1>Connexion</h1>
       </div>
       <LoginForm

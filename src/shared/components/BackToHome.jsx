@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 export default function BackToHome() {
   return (
-    <Link to='/'>
+    <Link to='/philmedical/compta/acceuil'>
         <Button variant='text' color='primary' className=' text-lowercase'>
             <ArrowBackIosRoundedIcon color='primary' />
             retourner à l'acceuil

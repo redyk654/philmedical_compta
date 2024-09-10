@@ -12,14 +12,14 @@ export default function DrawerList({ toggleDrawer }) {
 
     const logOut = () => {
         localStorage.clear()
-        navigate('/')
+        navigate('/philmedical/compta')
     }
 
   return (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
         <Box component='div' className='d-flex'>
             <AccountCircleIcon />
-            <p>Nom et prenom</p>
+            <p>Compta</p>
         </Box>
         <Divider />
         <List>
@@ -31,14 +31,14 @@ export default function DrawerList({ toggleDrawer }) {
                     <ListItemText primary="Comptabilité" />
                 </ListItemButton>
             </ListItem>
-            <ListItem disablePadding>
+            {/* <ListItem disablePadding>
                 <ListItemButton>
                     <ListItemIcon>
                         <SupervisorAccountIcon />
                     </ListItemIcon>
                     <ListItemText primary="Gestion des utilisateurs" />
                 </ListItemButton>
-            </ListItem>
+            </ListItem> */}
             <Divider />
             <ListItem disablePadding>
                 <ListItemButton onClick={logOut}>

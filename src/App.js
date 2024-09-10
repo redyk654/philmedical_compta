@@ -9,10 +9,10 @@ import EditGrandGroupe from './pages/EditGrandGroupe';
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<SignIn />} />
-      <Route path="comptabilite" element={<Comptable />} />
-      <Route path="comptabilite/editrubrique/:rubriqueId" element={<EditRubrique />} />
-      <Route path="comptabilite/editgrandgroupe/:grandGroupeId" element={<EditGrandGroupe />} />
+      <Route path="/philmedical/compta" element={<SignIn />} />
+      <Route path="philmedical/compta/acceuil" element={<Comptable />} />
+      <Route path="philmedical/compta/editrubrique/:rubriqueId" element={<EditRubrique />} />
+      <Route path="philmedical/compta/editgrandgroupe/:grandGroupeId" element={<EditGrandGroupe />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

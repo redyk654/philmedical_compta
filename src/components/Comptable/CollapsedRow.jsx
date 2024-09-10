@@ -14,7 +14,7 @@ export default function CollapsedRow({ row, isOpenCollapse, handleCollapse }) {
     const goToEditGrandGroupe = (e) => {
         handleGrandGroupeData(row)
         const grandGroupeId = e.target.id
-        navigate(`/comptabilite/editgrandgroupe/${grandGroupeId}`)
+        navigate(`/philmedical/compta/editgrandgroupe/${grandGroupeId}`)
     }
 
   return (

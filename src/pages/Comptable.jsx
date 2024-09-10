@@ -207,6 +207,11 @@ export default function Comptable() {
                     handleHeureDebut={handleHeureDebut}
                     handleHeureFin={handleHeureFin}
                 />
+                <div className=' text-center'>
+                    Total : <strong>
+                        {rubriques.reduce((acc, curr) => acc + curr.montant, 0)}
+                    </strong>
+                </div>
                 <CustomTitleH2>
                     Rubrique
                     <IconButton onClick={handleOpenModal}>

@@ -1,6 +1,5 @@
 import React, { useRef } from 'react'
 import { Container } from '@mui/material'
-import BackToHome from '../shared/components/BackToHome';
 import LoginForm from '../shared/components/LoginForm';
 import { useNavigate } from 'react-router-dom';
 import { dnsPath } from '../shared/constants/constants';

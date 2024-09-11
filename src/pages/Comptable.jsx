@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
-import { Box, Container, Drawer, IconButton } from '@mui/material';
+import { Box, Container, Drawer, IconButton, Tooltip } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DrawerList from '../components/Comptable/DrawerList';
 import TopBar from '../components/Comptable/TopBar';
@@ -15,6 +15,7 @@ import RubriqueTable from '../components/Comptable/RubriqueTable';
 import { CustomContext } from '../shared/contexts/CustomContext';
 import { getRequest } from '../apis/getRequests';
 import GrandGroupeTable from '../components/Comptable/GrandGroupeTable';
+import ModalDetails from '../components/Comptable/ModalDetails';
 
 export default function Comptable() {
 
@@ -34,9 +35,11 @@ export default function Comptable() {
     const [isModal, setIsModal] = useState(false);
     const [isHandlingSubmit, setIsHandlingSubmit] = useState(false);
     const [rubriques, setRubriques] = useState([]);
+    const [rubriqueSelected, setRubriqueSelected] = useState({});
     const [grandGoupes, setGrandGoupes] = useState([]);
     const [isLoadingData, setIsLoadingData] = useState(false);
     const [isModalGrandGroupe, setIsModalGrandGroupe] = useState(false);
+    const [isModalDetails, setIsModalDetails] = useState(false)
 
     const handleOpenModalGrandGroupe = () => setIsModalGrandGroupe(true);
 
@@ -52,6 +55,15 @@ export default function Comptable() {
         setIsModal(false);
         setIsHandlingSubmit(false);
         setDesignationRubrique('');
+    }
+
+    const handleOpenModalDetails = (rub) => {
+        setRubriqueSelected(rub);
+        setIsModalDetails(true)
+    }
+
+    const handleCloseModalDetails = () => {
+        setIsModalDetails(false)
     }
 
     const handleChangeRubrique = (e) => {
@@ -214,24 +226,31 @@ export default function Comptable() {
                 </div>
                 <CustomTitleH2>
                     Rubrique
-                    <IconButton onClick={handleOpenModal}>
-                        <AddCircleIcon
-                            fontSize='medium'
-                        />
-                    </IconButton>
+                    <Tooltip title="Ajouter une rubrique">
+                        <IconButton onClick={handleOpenModal}>
+                            <AddCircleIcon
+                                fontSize='medium'
+                            />
+                        </IconButton>
+                    </Tooltip>
                 </CustomTitleH2>
                 {isLoadingData ? (
                     <CustomizedLoader />
                 ) : (
-                    <RubriqueTable rubriques={rubriques} />
+                    <RubriqueTable
+                        rubriques={rubriques}
+                        handleOpenModalDetails={handleOpenModalDetails}
+                    />
                 )}
                 <CustomTitleH2>
                     Grand Groupe
-                    <IconButton onClick={handleOpenModalGrandGroupe}>
-                        <AddCircleIcon
-                            fontSize='medium'
-                        />
-                    </IconButton>
+                    <Tooltip title="Ajouter un grand groupe">
+                        <IconButton onClick={handleOpenModalGrandGroupe}>
+                            <AddCircleIcon
+                                fontSize='medium'
+                            />
+                        </IconButton>
+                    </Tooltip>
                 </CustomTitleH2>
                 <GrandGroupeTable
                     grandGoupes={grandGoupes}
@@ -254,6 +273,11 @@ export default function Comptable() {
                 handleChangeRubrique={handleChangeRubrique}
                 thisHandleSubmit={ajouterNouveauGrandGroupe}
                 isHandlingSubmit={isHandlingSubmit}
+            />
+            <ModalDetails
+                isModalDetails={isModalDetails}
+                handleCloseModalDetails={handleCloseModalDetails}
+                rubriqueSelected={rubriqueSelected}
             />
             <Drawer open={open} onClose={toggleDrawer(false)}>
                 <DrawerList toggleDrawer={toggleDrawer} />

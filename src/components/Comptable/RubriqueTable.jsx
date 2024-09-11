@@ -3,7 +3,7 @@ import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody
 import { formaterNombre } from '../../shared/functions/functions';
 import { useNavigate } from 'react-router-dom';
 
-const RubriqueTable = ({ rubriques }) => {
+const RubriqueTable = ({ rubriques, handleOpenModalDetails }) => {
 
     const navigate = useNavigate()
 
@@ -25,13 +25,14 @@ const RubriqueTable = ({ rubriques }) => {
     }
 
     return (
-        <Paper sx={{ width: 650, overflow: 'hidden' }}>
-            <TableContainer component={Paper} sx={{ maxWidth: 650, maxHeight: 360 }}>
+        <Paper sx={{ width: 690, overflow: 'hidden' }}>
+            <TableContainer component={Paper} sx={{ maxWidth: 690, maxHeight: 360 }}>
                 <Table stickyHeader sx={{ minWidth: 650 }} aria-label="rubrique table">
                     <TableHead>
                         <TableRow>
                             <TableCell className='fw-bold'>Nom Rubrique</TableCell>
                             <TableCell className='fw-bold'>Montant</TableCell>
+                            <TableCell className='fw-bold'>Détails</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -50,6 +51,18 @@ const RubriqueTable = ({ rubriques }) => {
                                     <strong>
                                         {formaterNombre(parseInt(row.montant))}
                                     </strong>
+                                </TableCell>
+                                <TableCell>
+                                    <a
+                                        href="#"
+                                        className='text-primary'
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            handleOpenModalDetails(row)
+                                        }}
+                                    >
+                                        afficher les détails
+                                    </a>
                                 </TableCell>
                             </TableRow>
                         ))}

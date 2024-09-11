@@ -36,7 +36,7 @@ export default function CollapsedRow({ row, isOpenCollapse, handleCollapse }) {
                 role='button'
                 onClick={goToEditGrandGroupe}
             >
-                {row.designation}
+                {row.designation.toUpperCase()}
             </TableCell>
             <TableCell>
                 <strong>

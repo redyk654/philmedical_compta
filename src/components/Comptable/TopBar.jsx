@@ -7,7 +7,7 @@ export default function TopBar({ toggleDrawer }) {
     <Box
         component='header'
         sx={{ width: '100%', height: 50, bgcolor: 'dark.main' }}
-        className='d-flex justify-content-between p-2'
+        className='d-flex justify-content-between p-2 sticky-top'
     >
         <Box>
             <Button onClick={toggleDrawer(true)}>

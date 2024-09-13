@@ -18,7 +18,7 @@ export default function DetailsRubriqueTable({ detailsRubrique }) {
 
   return (
     <Paper sx={{ width: 690, overflow: 'hidden' }}>
-        <TableContainer component={Paper} sx={{ maxWidth: 690, maxHeight: 360 }}>
+        <TableContainer component={Paper} sx={{ maxWidth: 690, maxHeight: 340 }}>
             <Table stickyHeader sx={{ minWidth: 650 }} aria-label="rubrique table">
                 <TableHead>
                     <TableRow>

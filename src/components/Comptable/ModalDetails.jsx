@@ -30,7 +30,7 @@ export default function ModalDetails({ isModalDetails, handleCloseModalDetails, 
         open={isModalDetails}
         onClose={handleCloseModalDetails}
     >
-        <Box sx={{...modalStyle, width: 'auto', height: 500}}>
+        <Box sx={{...modalStyle, width: 'auto', height: 540}}>
             <div>
                 <Tooltip title="Fermer">
                     <IconButton onClick={handleCloseModalDetails}>

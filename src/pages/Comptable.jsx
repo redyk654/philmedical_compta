@@ -221,7 +221,7 @@ export default function Comptable() {
                 />
                 <div className=' text-center'>
                     Total : <strong>
-                        {rubriques.reduce((acc, curr) => acc + curr.montant, 0)}
+                        {rubriques.reduce((acc, curr) => acc + parseInt(curr.montant), 0)}
                     </strong>
                 </div>
                 <CustomTitleH2>

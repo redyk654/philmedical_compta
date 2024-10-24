@@ -1,9 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
-import { Box, Container, Drawer, IconButton, Tooltip } from '@mui/material';
+import { Box, Container, IconButton, Tooltip } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import DrawerList from '../components/Comptable/DrawerList';
-import TopBar from '../components/Comptable/TopBar';
 import CustomTitle from '../shared/components/CustomTitle';
 import CustomTitleH2 from '../shared/components/CustomTitleH2';
 import ModalRubrique from '../components/Comptable/ModalRubrique';
@@ -30,7 +28,6 @@ export default function Comptable() {
         } = useContext(CustomContext);
 
     // const navigate = useNavigate()
-    const [open, setOpen] = useState(false);
     const [designationRubrique, setDesignationRubrique] = useState('')
     const [isModal, setIsModal] = useState(false);
     const [isHandlingSubmit, setIsHandlingSubmit] = useState(false);
@@ -69,10 +66,6 @@ export default function Comptable() {
     const handleChangeRubrique = (e) => {
         setDesignationRubrique(e.target.value)
     }
-
-    const toggleDrawer = (newOpen) => () => {
-        setOpen(newOpen);
-    };
 
     const regrouperRubriques = (data1, data2) => {
         const processedData = data1.map(group => {
@@ -206,7 +199,6 @@ export default function Comptable() {
     
     return (
         <Box sx={{ padding: 0 }}>
-            <TopBar toggleDrawer={toggleDrawer} />
             <Container>
                 <CustomTitle text='Comptabilité' />
                 <PeriodForm
@@ -279,9 +271,6 @@ export default function Comptable() {
                 handleCloseModalDetails={handleCloseModalDetails}
                 rubriqueSelected={rubriqueSelected}
             />
-            <Drawer open={open} onClose={toggleDrawer(false)}>
-                <DrawerList toggleDrawer={toggleDrawer} />
-            </Drawer>
         </Box>
     );
 }

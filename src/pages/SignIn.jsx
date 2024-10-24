@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { Container } from '@mui/material'
 import LoginForm from '../shared/components/LoginForm';
 import { useNavigate } from 'react-router-dom';
-import { dnsPath } from '../shared/constants/constants';
+import { dnsPath, pathsOfUrls } from '../shared/constants/constants';
 
 export default function SignIn() {
 
@@ -29,7 +29,7 @@ export default function SignIn() {
                 } else {
                     const result = JSON.parse(req.responseText);
                     if (result.rol.toLowerCase() === "compta") {
-                        navigate('/philmedical/compta/acceuil');
+                        navigate(`${pathsOfUrls.layoutNavBar}/${pathsOfUrls.comptable}`);
                     } else {
                         registerFormRef.current.setHelperTextEmail("identifiant ou mot de passe incorrect");
                         registerFormRef.current.setHelperTextPassword("identifiant ou mot de passe incorrect");

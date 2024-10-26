@@ -29,7 +29,7 @@ export default function SignIn() {
                 } else {
                     const result = JSON.parse(req.responseText);
                     if (result.rol.toLowerCase() === "compta") {
-                        navigate(`${pathsOfUrls.layoutNavBar}/${pathsOfUrls.comptable}`);
+                        navigate(`${pathsOfUrls.layoutNavBar}${pathsOfUrls.comptable}`);
                     } else {
                         registerFormRef.current.setHelperTextEmail("identifiant ou mot de passe incorrect");
                         registerFormRef.current.setHelperTextPassword("identifiant ou mot de passe incorrect");

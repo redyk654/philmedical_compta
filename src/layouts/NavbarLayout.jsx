@@ -1,8 +1,8 @@
 import { Box, Drawer } from '@mui/material'
 import React, { useState } from 'react'
 import { Outlet } from 'react-router-dom';
-import DrawerList from './DrawerList';
-import TopBar from './TopBar';
+import DrawerList from '../components/NavBar/DrawerList';
+import TopBar from '../components/NavBar/TopBar';
 
 export default function NavbarLayout() {
 

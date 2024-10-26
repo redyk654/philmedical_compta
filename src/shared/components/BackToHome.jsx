@@ -1,8 +1,7 @@
 import { Box, Button } from '@mui/material'
 import React from 'react'
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
-import { Link, useNavigate } from 'react-router-dom';
-import { pathsOfUrls } from '../constants/constants';
+import { useNavigate } from 'react-router-dom';
 
 export default function BackToHome() {
 
@@ -16,7 +15,7 @@ export default function BackToHome() {
     <Box>
         <Button variant='text' color='primary' className=' text-lowercase' onClick={goBack}>
             <ArrowBackIosRoundedIcon color='primary' />
-            retourner à l'acceuil
+            retour
         </Button>
     </Box>
   )

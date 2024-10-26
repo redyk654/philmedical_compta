@@ -7,6 +7,8 @@ import EditRubrique from './pages/EditRubrique';
 import EditGrandGroupe from './pages/EditGrandGroupe';
 import NavbarLayout from './layouts/NavbarLayout';
 import { pathsOfUrls } from './shared/constants/constants';
+import Prescripteurs from './pages/Prescripteurs';
+import Prestataires from './pages/Prestataires';
 
 function App() {
   return (
@@ -16,10 +18,9 @@ function App() {
         <Route path={`${pathsOfUrls.comptable}`} element={<Comptable />} />
         <Route path={`${pathsOfUrls.editRubrique}`} element={<EditRubrique />} />
         <Route path={`${pathsOfUrls.editGrandGroupe}`} element={<EditGrandGroupe />} />
+        <Route path={`${pathsOfUrls.prescripteurs}`} element={<Prescripteurs />} />
+        <Route path={`${pathsOfUrls.prestataires}`} element={<Prestataires />} />
       </Route>
-      {/* <Route path="philmedical/compta/acceuil" element={<Comptable />} />
-      <Route path="philmedical/compta/editrubrique/:rubriqueId" element={<EditRubrique />} />
-      <Route path="philmedical/compta/editgrandgroupe/:grandGroupeId" element={<EditGrandGroupe />} /> */}
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

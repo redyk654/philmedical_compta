@@ -8,6 +8,7 @@ import { getRequest } from '../apis/getRequests';
 import { postRequest } from '../apis/postRequests';
 import CustomTitleH2 from '../shared/components/CustomTitleH2';
 import TableStatesPrescribers from '../components/Prescripteurs/TableStatesPrescribers';
+import CustomizedLoader from '../shared/components/CustomizedLoader';
 
 export default function Prescripteurs() {
 
@@ -25,6 +26,7 @@ export default function Prescripteurs() {
   const [rubriquesDisponible, setRubriquesDisponible] = useState([]);
   const [rubriqueSelected, setRubriqueSelected] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
+  const [isLoadingData, setIsLoadingData] = useState(false);
 
   const getRubriquesDisponible = async () => {
     const url = `${dnsPath}gestion_rubriques.php?get_rubriques`
@@ -33,6 +35,7 @@ export default function Prescripteurs() {
         setRubriquesDisponible(response)
     } catch (error) {
         console.log('Error fetching rubriques:', error)
+    } finally {
     }
   }
 
@@ -41,6 +44,7 @@ export default function Prescripteurs() {
   }
 
   const getStatsPrescripteurs = async () => {
+    setIsLoadingData(true);
     const debut = dateDebut + ' ' + heureDebut;
     const fin = dateFin + ' ' + heureFin;
     const data = {
@@ -55,6 +59,8 @@ export default function Prescripteurs() {
       setData(response)
     } catch (error) {
       console.log('Error fetching stats prescripteurs:', error.message)
+    } finally {
+      setIsLoadingData(false);
     }
   }
 
@@ -73,6 +79,8 @@ export default function Prescripteurs() {
 
   return (
     <Box sx={{ padding:  0 }}>
+      {/* Loader */}
+      {isLoadingData && <CustomizedLoader />}
       <Container>
         <CustomTitle text='Etats des prescripteurs' />
         {alertMessage && <Alert severity="error">{alertMessage}</Alert>}

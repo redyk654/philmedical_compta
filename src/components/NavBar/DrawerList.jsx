@@ -1,6 +1,6 @@
 import { Box, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 import React from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -40,12 +40,12 @@ export default function DrawerList({ toggleDrawer }) {
                 label="Prescripteurs"
                 isActive={location.pathname.toLowerCase() === pathsOfUrls.layoutNavBar + pathsOfUrls.prescripteurs}
             />
-            <NavigationItem
+            {/* <NavigationItem
                 to={`${pathsOfUrls.prestataires}`}
                 icon={<EngineeringIcon />}
                 label="Prestataires"
                 isActive={location.pathname.toLowerCase() === pathsOfUrls.layoutNavBar + pathsOfUrls.prestataires}
-            />
+            /> */}
             <Divider />
             <ListItem disablePadding>
                 <ListItemButton onClick={logOut}>

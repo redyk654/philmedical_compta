@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { Box, Container, FormControl, InputLabel, Select, MenuItem, Alert } from '@mui/material';
+import React, { useContext, useEffect, useRef, useState } from 'react'
+import { Box, Container, FormControl, InputLabel, Select, MenuItem, Alert, Button } from '@mui/material';
 import { dnsPath } from '../shared/constants/constants';
 import CustomTitle from '../shared/components/CustomTitle';
 import { CustomContext } from '../shared/contexts/CustomContext';
@@ -114,8 +114,8 @@ export default function Prescripteurs() {
             </Select>
         </FormControl>
         <Box sx={{ margin: 2 }}>
-          <CustomTitleH2>Rubrique {rubriqueSelected}</CustomTitleH2>
-          <TableStatesPrescribers data={data} />
+          {/* <CustomTitleH2>Rubrique {rubriqueSelected}</CustomTitleH2> */}
+          <TableStatesPrescribers data={data} rubriqueSelected={rubriqueSelected} />
         </Box>
       </Container>
     </Box>

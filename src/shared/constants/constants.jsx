@@ -9,6 +9,7 @@ export const pathsOfUrls = {
     editRubrique: 'editrubrique/:rubriqueId',
     editGrandGroupe: 'editgrandgroupe/:grandGroupeId',
     prescripteurs: 'prescripteurs',
+    detailsPrescriber: 'details/:id',
     prestataires: 'prestataires',
     signIn: 'signin',
     notFound: '*'

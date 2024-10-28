@@ -30,3 +30,9 @@ export function intersection(a, b) {
 export function union(a, b) {
     return [...a, ...not(b, a)];
 }
+
+// convert aaaa-mm-dd date to dd month yyyy
+export const convertDate = (date) => {
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    return new Date(date).toLocaleDateString('en-GB', options);
+};

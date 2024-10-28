@@ -111,7 +111,7 @@ export default function EditRubrique() {
 
     const initialiserListes = (listeActes) => {
         setLeft(listeActes.filter(acte => parseInt(acte.id_rubrique) === parseInt(rubriqueInfo[0])));
-        setRight(listeActes.filter(acte => parseInt(acte.id_rubrique) !== parseInt(rubriqueInfo[0])));
+        setRight(listeActes.filter(acte => parseInt(acte.id_rubrique) === 0));
     }
 
     const handleToggle = (value) => () => {

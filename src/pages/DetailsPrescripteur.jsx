@@ -7,6 +7,7 @@ import { dnsPath } from '../shared/constants/constants';
 import { convertDate } from '../shared/functions/functions';
 import { getRequest } from '../apis/getRequests';
 import CustomizedLoader from '../shared/components/CustomizedLoader';
+import BackToHome from '../shared/components/BackToHome';
 
 export default function DetailsPrescripteur() {
 
@@ -60,6 +61,9 @@ export default function DetailsPrescripteur() {
 
     return (
         <div>
+                    <div className='p-2'>
+            <BackToHome />
+        </div>
             {/* Loader */}
             {isLoadingData && <CustomizedLoader />}
             <h3 style={{ margin: '10px', textAlign: 'center' }}>

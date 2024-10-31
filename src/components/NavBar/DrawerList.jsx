@@ -40,12 +40,12 @@ export default function DrawerList({ toggleDrawer }) {
                 label="Prescripteurs"
                 isActive={location.pathname.toLowerCase() === pathsOfUrls.layoutNavBar + pathsOfUrls.prescripteurs}
             />
-            {/* <NavigationItem
-                to={`${pathsOfUrls.prestataires}`}
+            <NavigationItem
+                to={`${pathsOfUrls.prescripteursManager}`}
                 icon={<EngineeringIcon />}
-                label="Prestataires"
-                isActive={location.pathname.toLowerCase() === pathsOfUrls.layoutNavBar + pathsOfUrls.prestataires}
-            /> */}
+                label="Gestion des prescripteurs"
+                isActive={location.pathname.toLowerCase() === pathsOfUrls.layoutNavBar + pathsOfUrls.prescripteursManager}
+            />
             <Divider />
             <ListItem disablePadding>
                 <ListItemButton onClick={logOut}>

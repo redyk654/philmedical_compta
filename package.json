@@ -1,6 +1,6 @@
 {
   "name": "philmedical",
-  "homepage": "/philmedical/compta/signin",
+  "homepage": "/philmedical/compta",
   "version": "1.0.0",
   "private": true,
   "dependencies": {

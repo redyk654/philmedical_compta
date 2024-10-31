@@ -5,6 +5,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { formaterNombre } from '../../shared/functions/functions';
 import { useNavigate } from 'react-router-dom';
 import { CustomContext } from '../../shared/contexts/CustomContext';
+import { pathsOfUrls } from '../../shared/constants/constants';
 
 export default function CollapsedRow({ row, isOpenCollapse, handleCollapse }) {
 
@@ -14,7 +15,7 @@ export default function CollapsedRow({ row, isOpenCollapse, handleCollapse }) {
     const goToEditGrandGroupe = (e) => {
         handleGrandGroupeData(row)
         const grandGroupeId = e.target.id
-        navigate(`/philmedical/compta/editgrandgroupe/${grandGroupeId}`)
+        navigate(`${pathsOfUrls.layoutNavBar}editgrandgroupe/${grandGroupeId}`)
     }
 
   return (

@@ -12,6 +12,12 @@ const CustomProvider = (props) => {
     const [heureDebut, setHeureDebut] = useState('');
     const [heureFin, setHeureFin] = useState('');
     const [grandGroupeData, setGrandGroupeData] = useState([]);
+    const [rubriqueSelected, setRubriqueSelected] = useState('');
+
+
+    const handleChangeRubrique = (e) => {
+        setRubriqueSelected(e.target.value)
+    }    
 
     const handleDateDebut = (e) => {
         setDateDebut(e.target.value)
@@ -34,7 +40,7 @@ const CustomProvider = (props) => {
     }
     
     return (
-        <CustomContext.Provider value={{dateDebut, handleDateDebut, dateFin, handleDateFin, heureDebut, handleHeureDebut, heureFin, handleHeureFin, grandGroupeData, handleGrandGroupeData}}>
+        <CustomContext.Provider value={{dateDebut, handleDateDebut, dateFin, handleDateFin, heureDebut, handleHeureDebut, heureFin, handleHeureFin, grandGroupeData, handleGrandGroupeData, rubriqueSelected, handleChangeRubrique}}>
             {props.children}
         </CustomContext.Provider>
     )

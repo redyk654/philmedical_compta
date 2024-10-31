@@ -1,12 +1,11 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
-import { Box, Container, FormControl, InputLabel, Select, MenuItem, Alert, Button } from '@mui/material';
+import React, { useContext, useEffect, useState } from 'react'
+import { Box, Container, FormControl, InputLabel, Select, MenuItem, Alert } from '@mui/material';
 import { dnsPath } from '../shared/constants/constants';
 import CustomTitle from '../shared/components/CustomTitle';
 import { CustomContext } from '../shared/contexts/CustomContext';
 import PeriodForm from '../components/Comptable/PeriodForm';
 import { getRequest } from '../apis/getRequests';
 import { postRequest } from '../apis/postRequests';
-import CustomTitleH2 from '../shared/components/CustomTitleH2';
 import TableStatesPrescribers from '../components/Prescripteurs/TableStatesPrescribers';
 import CustomizedLoader from '../shared/components/CustomizedLoader';
 
@@ -19,12 +18,14 @@ export default function Prescripteurs() {
     heureDebut,
     handleHeureDebut,
     heureFin,
-    handleHeureFin
+    handleHeureFin,
+    rubriqueSelected,
+    handleChangeRubrique
   } = useContext(CustomContext);
 
   const [data, setData] = useState([]);
   const [rubriquesDisponible, setRubriquesDisponible] = useState([]);
-  const [rubriqueSelected, setRubriqueSelected] = useState('');
+  // const [rubriqueSelected, setRubriqueSelected] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [isLoadingData, setIsLoadingData] = useState(false);
 
@@ -39,18 +40,17 @@ export default function Prescripteurs() {
     }
   }
 
-  const handleChangeRubrique = (e) => {
-    setRubriqueSelected(e.target.value)
-  }
-
   const getStatsPrescripteurs = async () => {
+    // if (rubriqueSelected === '' || rubriquesDisponible.length === 0) {
+    //   return;
+    // }
     setIsLoadingData(true);
     const debut = dateDebut + ' ' + heureDebut;
     const fin = dateFin + ' ' + heureFin;
     const data = {
       debut: debut,
       fin: fin,
-      id_rubrique: rubriquesDisponible.find(rubrique => rubrique.designation.toLowerCase() === rubriqueSelected.toLowerCase()).id
+      id_rubrique: rubriquesDisponible.find(rubrique => rubrique.designation.toLowerCase() === rubriqueSelected.toLowerCase())?.id
     }
 
     const url = `${dnsPath}gestion_prescripteurs.php?get_stats_prescripteurs`
@@ -66,11 +66,9 @@ export default function Prescripteurs() {
 
   useEffect(() => {
     setAlertMessage('');
-    if (!rubriqueSelected || rubriqueSelected === '' || !dateDebut || !dateFin || !heureDebut || !heureFin) {
-      setAlertMessage('Veuillez remplir tous les champs');
-      return;
+    if (dateDebut && heureDebut && dateFin && heureFin && rubriqueSelected && rubriquesDisponible.length > 0) {      
+      getStatsPrescripteurs();
     }
-    getStatsPrescripteurs();
   }, [rubriqueSelected, dateDebut, dateFin, heureDebut, heureFin]);
 
   useEffect(() => {
@@ -113,7 +111,7 @@ export default function Prescripteurs() {
                 ))}
             </Select>
         </FormControl>
-        <Box sx={{ margin: 2 }}>
+        <Box sx={{ margin: 2, height: '5vh' }}>
           {/* <CustomTitleH2>Rubrique {rubriqueSelected}</CustomTitleH2> */}
           <TableStatesPrescribers data={data} rubriqueSelected={rubriqueSelected} />
         </Box>

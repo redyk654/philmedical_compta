@@ -2,6 +2,7 @@ import React from 'react';
 import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, TablePagination } from '@mui/material';
 import { formaterNombre } from '../../shared/functions/functions';
 import { useNavigate } from 'react-router-dom';
+import { pathsOfUrls } from '../../shared/constants/constants';
 
 const RubriqueTable = ({ rubriques, handleOpenModalDetails }) => {
 
@@ -21,7 +22,7 @@ const RubriqueTable = ({ rubriques, handleOpenModalDetails }) => {
 
     const goToEditRubrique = (e) => {
         const rubriqueId = e.target.id
-        navigate(`/philmedical/compta/editrubrique/${rubriqueId}`)
+        navigate(`${pathsOfUrls.layoutNavBar}editrubrique/${rubriqueId}`)
     }
 
     return (

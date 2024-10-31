@@ -28,7 +28,7 @@ export default function TableStatesPrescribers({ data , rubriqueSelected}) {
     const handlePrint = useReactToPrint({ contentRef });
 
     const detailsForAPrescriber = (id) => {
-        console.log('details for prescriber:', id);
+        // console.log('details for prescriber:', id);
         navigate(`${pathsOfUrls.layoutNavBar}${pathsOfUrls.prescripteurs}/details/${id}`);
     }
 

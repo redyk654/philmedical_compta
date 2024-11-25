@@ -31,7 +31,7 @@ export default function TableStatesPrescribers({ data , rubriqueSelected}) {
 
     return (
         <Box>
-            <Box component='div' ref={contentRef}>pathsOfUrls
+            <Box component='div' ref={contentRef}>
                 <InformationHeader rubriqueSelected={rubriqueSelected} />
                 <TableContainer component={Paper} style={{ marginTop: '20px', maxWidth: '90%', margin: 'auto' }}>
                     <Table>

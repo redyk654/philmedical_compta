@@ -12,10 +12,11 @@ export default function InformationHeader({ rubriqueSelected }) {
 
   return (
     <div style={{ margin: '25px'}}>
-        <h1>
+        {rubriqueSelected !== '' && <h1>Etat des prescripteurs de <strong>{rubriqueSelected}</strong></h1>}
+        {/* <h1>
             Etat des prescripteurs de
             <strong>{" " + rubriqueSelected}</strong>
-        </h1>
+        </h1> */}
         <h3 style={{ margin: '10px' }}>
             Période du
             {" " + convertDate(dateDebut) + " "}

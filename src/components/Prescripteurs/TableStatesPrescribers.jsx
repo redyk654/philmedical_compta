@@ -8,21 +8,18 @@ import InformationHeader from './InformationHeader';
 import { useNavigate } from 'react-router-dom';
 import { pathsOfUrls } from '../../shared/constants/constants';
 
-const calculateNet = (total, percentage) => (total * percentage) / 100;
+const calculateNet = (total, percentage) => (parseInt(total) * parseInt(percentage)) / 100;
 
 export default function TableStatesPrescribers({ data , rubriqueSelected}) {
 
-    const [percentages, setPercentages] = useState({});
+    const [percentages, setPercentages] = useState(0);
 
     const contentRef = useRef();
     const navigate = useNavigate();
 
     // Mise à jour de l'état des pourcentages
     const handlePercentageChange = (medecin, value) => {
-        setPercentages((prev) => ({
-            ...prev,
-            [medecin]: value,
-        }));
+        setPercentages(value);
     };
 
     const handlePrint = useReactToPrint({ contentRef });
@@ -34,7 +31,7 @@ export default function TableStatesPrescribers({ data , rubriqueSelected}) {
 
     return (
         <Box>
-            <Box component='div' ref={contentRef}>
+            <Box component='div' ref={contentRef}>pathsOfUrls
                 <InformationHeader rubriqueSelected={rubriqueSelected} />
                 <TableContainer component={Paper} style={{ marginTop: '20px', maxWidth: '90%', margin: 'auto' }}>
                     <Table>
@@ -49,7 +46,7 @@ export default function TableStatesPrescribers({ data , rubriqueSelected}) {
                         </TableHead>
                         <TableBody>
                             {data.map((row) => {
-                                const percentage = percentages[row.medecin] || 0;
+                                const percentage = percentages;
                                 const net = calculateNet(row.total, percentage);
 
                                 return (

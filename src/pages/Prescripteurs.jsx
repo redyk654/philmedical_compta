@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Box, Container, FormControl, InputLabel, Select, MenuItem, Alert } from '@mui/material';
+import { Box, Container, FormControl, InputLabel, Select, MenuItem, Alert, Link } from '@mui/material';
 import { dnsPath } from '../shared/constants/constants';
 import CustomTitle from '../shared/components/CustomTitle';
 import { CustomContext } from '../shared/contexts/CustomContext';
@@ -55,7 +55,7 @@ export default function Prescripteurs() {
 
     const url = `${dnsPath}gestion_prescripteurs.php?get_stats_prescripteurs`
     try {
-      const response = await postRequest(url, data)
+      const response = await postRequest(url, data)      
       setData(response)
     } catch (error) {
       console.log('Error fetching stats prescripteurs:', error.message)
@@ -74,6 +74,12 @@ export default function Prescripteurs() {
   useEffect(() => {
     getRubriquesDisponible();
   }, []);
+
+  const masquerPrescriteursAZero = (e) => {
+    e.preventDefault();
+    // console.log(data);
+    setData(data.filter(prescripteur => parseInt(prescripteur.total) > 0));
+  }
 
   return (
     <Box sx={{ padding:  0 }}>
@@ -111,6 +117,11 @@ export default function Prescripteurs() {
                 ))}
             </Select>
         </FormControl>
+        <Box>
+          <Link component={'a'} style={{ textDecoration: 'none', cursor: 'pointer' }} onClick={masquerPrescriteursAZero}>
+            masquer les prescripteurs à 0
+          </Link>
+        </Box>
         <Box sx={{ margin: 2, height: '5vh' }}>
           {/* <CustomTitleH2>Rubrique {rubriqueSelected}</CustomTitleH2> */}
           <TableStatesPrescribers data={data} rubriqueSelected={rubriqueSelected} />

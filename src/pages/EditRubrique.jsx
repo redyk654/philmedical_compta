@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import CustomTitle from '../shared/components/CustomTitle';
 import { Box, Button, Container, Grid, Link, Modal, TextField, Typography } from '@mui/material';
 import { dnsPath } from '../shared/constants/constants';
@@ -21,6 +21,8 @@ export default function EditRubrique() {
     const { rubriqueId } = useParams();
     const rubriqueInfo = rubriqueId.split('-');
 
+    const navigate = useNavigate();
+
     const [checked, setChecked] = useState([]);
     const [left, setLeft] = useState([]);
     const [right, setRight] = useState([]);
@@ -33,6 +35,7 @@ export default function EditRubrique() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newActe, setNewActe] = useState({ designation: '', prix: 0 });
     const [helperError, setHelperError] = useState('');
+    const [isModalDelete, setIsModalDelete] = useState(false);
 
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
@@ -81,6 +84,14 @@ export default function EditRubrique() {
         setIsModalOpen(false);
         setNewActe({ designation: '', prix: 0 });
         setHelperError('');
+    }
+
+    const handleOpenModalDelete = () => {
+        setIsModalDelete(true)
+    }
+
+    const handleCloseModalDelete = () => {
+        setIsModalDelete(false)
     }
 
     useEffect(() => {
@@ -190,7 +201,6 @@ export default function EditRubrique() {
             if (res.message === 'success') {
                 setActesModifes([]);
                 setIsHandlingSubmit(false);
-                console.log("Rubrique modifiée avec succès");
             }
         } catch (error) {
             setIsHandlingSubmit(false);
@@ -214,12 +224,27 @@ export default function EditRubrique() {
         return actesModifes.length === 0 || isHandlingSubmit;
     }
 
+    const deleteRubrique =  async () => {        
+        const url = `${dnsPath}gestion_rubriques.php?delete_rubrique&id=${rubriqueInfo[0]}`;
+        try {
+            const res = await postRequest(url);
+            if (res.message === 'success') {
+                navigate('/philmedical/compta/layoutnav/comptable');
+            }
+        } catch (error) {
+            console.error('Error deleting rubrique:', error);
+        }
+    }
+
   return (
     <Container>
         <div className='p-2'>
             <BackToHome />
         </div>
         <CustomTitle text={`Editer ${rubriqueInfo[1]}`} />
+        <Button color='error' onClick={handleOpenModalDelete}>
+            Supprimer la rubrique
+        </Button>
         {isLoadingData && <CustomizedLoader />}
         <Grid container spacing={2} justifyContent="center" alignItems="center">
             <Grid item>
@@ -280,7 +305,7 @@ export default function EditRubrique() {
                     Ajouter un acte
                 </Link>
                 <CustomList
-                    title="Toutes les rubriques"
+                    title="Non affectés"
                     items={filteredRight}
                     checked={checked}
                     handleToggle={handleToggle}
@@ -301,8 +326,8 @@ export default function EditRubrique() {
         <Modal
             open={isModalOpen}
             onClose={handleCloseModal}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
+            aria-labelledby="modal-modal-acte"
+            aria-describedby="modal-modal-acte"
         >
             <Box sx={modalStyle}>
                 <CustomTitleH2>
@@ -346,6 +371,23 @@ export default function EditRubrique() {
                         </Grid>
                     </Grid>
                 </form>
+            </Box>
+        </Modal>
+        <Modal
+            open={isModalDelete}
+            onClose={handleCloseModalDelete}
+        >
+            <Box sx={modalStyle}>
+                <CustomTitleH2>
+                    ALERTE
+                </CustomTitleH2>
+                <p>
+                    La suppression d'une rubrique est irreversible. Voulez-vous continuez ?
+                </p>
+                <Box component='div' className='d-flex justify-content-around align-items-center'>
+                    <Button color='primary' onClick={handleCloseModalDelete} size='large'>Annuler</Button>
+                    <Button color='error' variant='contained' onClick={deleteRubrique}>Supprimer</Button>
+                </Box>
             </Box>
         </Modal>
     </Container>

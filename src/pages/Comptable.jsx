@@ -14,6 +14,7 @@ import { CustomContext } from '../shared/contexts/CustomContext';
 import { getRequest } from '../apis/getRequests';
 import GrandGroupeTable from '../components/Comptable/GrandGroupeTable';
 import ModalDetails from '../components/Comptable/ModalDetails';
+import { formaterNombre } from '../shared/functions/functions';
 
 export default function Comptable() {
 
@@ -213,7 +214,7 @@ export default function Comptable() {
                 />
                 <div className=' text-center'>
                     Total : <strong>
-                        {rubriques.reduce((acc, curr) => acc + parseInt(curr.montant), 0)}
+                        {formaterNombre(rubriques.reduce((acc, curr) => acc + parseInt(curr.montant), 0))}
                     </strong>
                 </div>
                 <CustomTitleH2>

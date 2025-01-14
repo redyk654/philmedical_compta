@@ -1,5 +1,5 @@
-// const serverPath = 'http://serveur/hdmbanga/';
-const serverPath = 'http://localhost:8080/';
+const serverPath = 'http://serveur/hdmbanga/';
+// const serverPath = 'http://localhost:8080/';
 
 export const dnsPath = serverPath;
 

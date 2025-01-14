@@ -75,8 +75,8 @@ export default function Prescripteurs() {
     getRubriquesDisponible();
   }, []);
 
-  const masquerPrescriteursAZero = (e) => {
-    e.preventDefault();
+  const masquerPrescriteursAZero = () => {
+    // e.preventDefault();
     // console.log(data);
     setData(data.filter(prescripteur => parseInt(prescripteur.total) > 0));
   }
@@ -118,13 +118,13 @@ export default function Prescripteurs() {
             </Select>
         </FormControl>
         <Box>
-          <Link component={'a'} style={{ textDecoration: 'none', cursor: 'pointer' }} onClick={masquerPrescriteursAZero}>
+          {/* <Link component={'a'} style={{ textDecoration: 'none', cursor: 'pointer' }} onClick={masquerPrescriteursAZero}>
             masquer les prescripteurs à 0
-          </Link>
+          </Link> */}
         </Box>
         <Box sx={{ margin: 2, height: '5vh' }}>
           {/* <CustomTitleH2>Rubrique {rubriqueSelected}</CustomTitleH2> */}
-          <TableStatesPrescribers data={data} rubriqueSelected={rubriqueSelected} />
+          <TableStatesPrescribers data={data} rubriqueSelected={rubriqueSelected} setData={setData} masquerPrescriteursAZero={masquerPrescriteursAZero} />
         </Box>
       </Container>
     </Box>

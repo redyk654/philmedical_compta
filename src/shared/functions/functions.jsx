@@ -34,5 +34,5 @@ export function union(a, b) {
 // convert aaaa-mm-dd date to dd month yyyy
 export const convertDate = (date) => {
     const options = { year: 'numeric', month: 'short', day: 'numeric' };
-    return new Date(date).toLocaleDateString('en-GB', options);
+    return new Date(date).toLocaleDateString('fr-FR', options);
 };

@@ -1,10 +1,12 @@
 import React, { useRef } from 'react';
+import './HandlePrint.css';
 import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, TablePagination, Button } from '@mui/material';
 import { formaterNombre } from '../../shared/functions/functions';
 import { useNavigate } from 'react-router-dom';
 import { pathsOfUrls } from '../../shared/constants/constants';
 import { useReactToPrint } from 'react-to-print';
 import InformationHeader from '../Prescripteurs/InformationHeader';
+import PrintRubrique from './PrintRubrique';
 
 const RubriqueTable = ({ rubriques, handleOpenModalDetails }) => {
 
@@ -32,7 +34,7 @@ const RubriqueTable = ({ rubriques, handleOpenModalDetails }) => {
     const handlePrint = useReactToPrint({ contentRef });
 
     return (
-        <div ref={contentRef}>
+        <div>
             <InformationHeader rubriqueSelected={''} />
                 <Paper sx={{ width: 690, overflow: 'hidden' }}>
                 <TableContainer component={Paper} sx={{ maxWidth: 690, maxHeight: 360 }}>
@@ -88,8 +90,11 @@ const RubriqueTable = ({ rubriques, handleOpenModalDetails }) => {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
                 <Button variant="contained" color="primary" onClick={handlePrint} style={{ marginTop: '20px' }}>
-                    Imprimer
+                    Imprimer le rapport
                 </Button>
+                <div className="printContent" ref={contentRef}>
+                    <PrintRubrique rubriques={rubriques} />
+                </div>
             </Paper>
         </div>
     );

@@ -1,0 +1,7 @@
+.printContent {
+    display: none;
+
+    @media print {
+        display: block;
+    }
+}

@@ -4,9 +4,9 @@
 }
 
 @media print {
-    body * {
+    /* body * {
         visibility: hidden;
-    }
+    } */
     .printContent, .printContent * {
         visibility: visible;
         height: auto;

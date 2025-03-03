@@ -32,8 +32,8 @@ export default function TableStatesPrescribers({ data, rubriqueSelected, setData
     };
 
     return (
-        <Box>
-            <Box component='div' ref={contentRef}>
+        <div>
+            <div component='div' ref={contentRef}>
                 <InformationHeader rubriqueSelected={rubriqueSelected} />
                 <TableContainer component={Paper} style={{ marginTop: '20px', maxWidth: '90%', margin: 'auto' }}>
                     <Table>
@@ -84,7 +84,7 @@ export default function TableStatesPrescribers({ data, rubriqueSelected, setData
                         </TableBody>
                     </Table>
                 </TableContainer>
-            </Box>
+            </div>
             <div style={{ display: 'flex', justifyContent: 'space-around', padding: '20px' }}>
                 <Button variant="contained" color="primary" onClick={masquerPrescriteursAZero} style={{ marginTop: '20px' }}>
                     masquer les prescripteurs à zéro
@@ -93,6 +93,6 @@ export default function TableStatesPrescribers({ data, rubriqueSelected, setData
                     Imprimer
                 </Button>
             </div>
-        </Box>
+        </div>
     );
 }

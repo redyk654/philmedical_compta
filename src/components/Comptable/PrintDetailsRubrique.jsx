@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { CustomContext } from '../../shared/contexts/CustomContext';
-import { convertDate, formaterNombre } from '../../shared/functions/functions';
+import { convertDate, extraireCode, formaterNombre } from '../../shared/functions/functions';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 
 export default function PrintDetailsRubrique({ detailsRubrique, rubriqueSelected }) {
@@ -39,6 +39,7 @@ export default function PrintDetailsRubrique({ detailsRubrique, rubriqueSelected
                         <TableHead>
                             <TableRow>
                                 <TableCell className='fw-bold'>Désignation</TableCell>
+                                <TableCell className='fw-bold'>Qte</TableCell>
                                 <TableCell className='fw-bold'>Montant</TableCell>
                             </TableRow>
                         </TableHead>
@@ -48,7 +49,12 @@ export default function PrintDetailsRubrique({ detailsRubrique, rubriqueSelected
                                     key={row.id}
                                 >
                                     <TableCell className='text-capitalize fs-6'>
-                                        {row.designation}
+                                        {extraireCode(row.designation)}
+                                    </TableCell>
+                                    <TableCell>
+                                        <strong>
+                                            {row.qte}
+                                        </strong>
                                     </TableCell>
                                     <TableCell className='fs-6'>
                                         <strong>

@@ -1,7 +1,20 @@
 .printContent {
-    display: none;
+    visibility: hidden;
+    height: 0px;
+}
 
-    @media print {
-        display: block;
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    .printContent, .printContent * {
+        visibility: visible;
+        height: auto;
+    }
+    .printContent {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
     }
 }

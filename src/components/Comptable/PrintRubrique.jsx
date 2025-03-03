@@ -17,7 +17,7 @@ export default function PrintRubrique({ rubriques }) {
         <div className='d-flex justify-content-between flex-column'>
             <div>
                 <h3 className='text-center text-uppercase'>
-                    Rapport des revenues par rubrique
+                    Rapport des revenus par rubrique
                 </h3>
             </div>
             <div className='mt-3'>

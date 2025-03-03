@@ -8,7 +8,7 @@ import { useReactToPrint } from 'react-to-print';
 import InformationHeader from '../Prescripteurs/InformationHeader';
 import PrintRubrique from './PrintRubrique';
 
-const RubriqueTable = ({ rubriques, handleOpenModalDetails }) => {
+const RubriqueTable = ({ rubriques, handleOpenModalDetails, masquerRubriquesAZero }) => {
 
     const navigate = useNavigate()
     const contentRef = useRef();
@@ -31,7 +31,9 @@ const RubriqueTable = ({ rubriques, handleOpenModalDetails }) => {
         navigate(`${pathsOfUrls.layoutNavBar}editrubrique/${rubriqueId}`)
     }
 
-    const handlePrint = useReactToPrint({ contentRef });
+    const handlePrint = useReactToPrint({
+        contentRef
+    });
 
     return (
         <div>
@@ -89,7 +91,10 @@ const RubriqueTable = ({ rubriques, handleOpenModalDetails }) => {
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
-                <Button variant="contained" color="primary" onClick={handlePrint} style={{ marginTop: '20px' }}>
+                <Button variant="contained" color="primary" onClick={masquerRubriquesAZero} style={{ marginTop: '20px' }}>
+                    masquer les rubriques à zéro
+                </Button>
+                <Button variant="contained" color="primary" onClick={handlePrint} style={{ marginTop: '20px', marginLeft: '10px' }}>
                     Imprimer le rapport
                 </Button>
                 <div className="printContent" ref={contentRef}>

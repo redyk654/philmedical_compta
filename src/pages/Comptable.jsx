@@ -197,6 +197,12 @@ export default function Comptable() {
             console.error("Erreur lors de l'ajout du grand groupe", error);
         }
     }
+
+    const masquerRubriquesAZero = () => {
+        // e.preventDefault();
+        // console.log(data);
+        setRubriques(rubriques.filter(rubrique => parseInt(rubrique.montant) > 0));
+    }
     
     return (
         <Box sx={{ padding: 0 }}>
@@ -233,6 +239,7 @@ export default function Comptable() {
                     <RubriqueTable
                         rubriques={rubriques}
                         handleOpenModalDetails={handleOpenModalDetails}
+                        masquerRubriquesAZero={masquerRubriquesAZero}
                     />
                 )}
                 <CustomTitleH2>

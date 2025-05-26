@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Box, Container, FormControl, InputLabel, Select, MenuItem, Alert, Link } from '@mui/material';
+import { Box, Container, FormControl, InputLabel, Select, MenuItem, Alert, Link, FormGroup, FormControlLabel } from '@mui/material';
 import { dnsPath } from '../shared/constants/constants';
 import CustomTitle from '../shared/components/CustomTitle';
 import { CustomContext } from '../shared/contexts/CustomContext';
@@ -8,6 +8,7 @@ import { getRequest } from '../apis/getRequests';
 import { postRequest } from '../apis/postRequests';
 import TableStatesPrescribers from '../components/Prescripteurs/TableStatesPrescribers';
 import CustomizedLoader from '../shared/components/CustomizedLoader';
+import { Checkbox } from '@mui/material'; // ✅ Import correct
 
 export default function Prescripteurs() {
 
@@ -20,12 +21,13 @@ export default function Prescripteurs() {
     heureFin,
     handleHeureFin,
     rubriqueSelected,
-    handleChangeRubrique
+    // handleChangeRubrique
   } = useContext(CustomContext);
 
   const [data, setData] = useState([]);
+  // ✅ Changé pour gérer un tableau de sélections
+  const [rubriquesSelectionnees, setRubriquesSelectionnees] = useState([]);
   const [rubriquesDisponible, setRubriquesDisponible] = useState([]);
-  // const [rubriqueSelected, setRubriqueSelected] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [isLoadingData, setIsLoadingData] = useState(false);
 
@@ -41,17 +43,23 @@ export default function Prescripteurs() {
   }
 
   const getStatsPrescripteurs = async () => {
-    // if (rubriqueSelected === '' || rubriquesDisponible.length === 0) {
-    //   return;
-    // }
     setIsLoadingData(true);
     const debut = dateDebut + ' ' + heureDebut;
     const fin = dateFin + ' ' + heureFin;
+    
+    // ✅ Gérer plusieurs rubriques sélectionnées
+    const idsRubriques = rubriquesSelectionnees.map(designation => 
+      rubriquesDisponible.find(rubrique => rubrique.designation === designation)?.id
+    ).filter(id => id !== undefined);
+
     const data = {
       debut: debut,
       fin: fin,
-      id_rubrique: rubriquesDisponible.find(rubrique => rubrique.designation.toLowerCase() === rubriqueSelected.toLowerCase())?.id
+      ids_rubriques: idsRubriques // Envoyer un tableau d'IDs
     }
+
+    console.log('Data to send:', data);
+    
 
     const url = `${dnsPath}gestion_prescripteurs.php?get_stats_prescripteurs`
     try {
@@ -66,23 +74,38 @@ export default function Prescripteurs() {
 
   useEffect(() => {
     setAlertMessage('');
-    if (dateDebut && heureDebut && dateFin && heureFin && rubriqueSelected && rubriquesDisponible.length > 0) {      
+    if (dateDebut && heureDebut && dateFin && heureFin && rubriquesSelectionnees.length > 0 && rubriquesDisponible.length > 0) {      
       getStatsPrescripteurs();
     }
-  }, [rubriqueSelected, dateDebut, dateFin, heureDebut, heureFin]);
+  }, [rubriquesSelectionnees, dateDebut, dateFin, heureDebut, heureFin]);
 
   useEffect(() => {
     getRubriquesDisponible();
   }, []);
 
   const masquerPrescriteursAZero = () => {
-    // e.preventDefault();
-    // console.log(data);
     setData(data.filter(prescripteur => parseInt(prescripteur.total) > 0));
   }
 
+  // ✅ Nouvelle fonction pour gérer la sélection multiple
+  const onChangeCheckBox = (event) => {
+    const { checked, value } = event.target;
+    
+    if (checked) {
+      // Ajouter la rubrique si elle n'est pas déjà sélectionnée
+      setRubriquesSelectionnees(prev => 
+        prev.includes(value) ? prev : [...prev, value]
+      );
+    } else {
+      // Retirer la rubrique de la sélection
+      setRubriquesSelectionnees(prev => 
+        prev.filter(rubrique => rubrique !== value)
+      );
+    }
+  }
+
   return (
-    <Box sx={{ padding:  0 }}>
+    <Box sx={{ padding: 0 }}>
       {/* Loader */}
       {isLoadingData && <CustomizedLoader />}
       <Container>
@@ -98,33 +121,55 @@ export default function Prescripteurs() {
             handleHeureDebut={handleHeureDebut}
             handleHeureFin={handleHeureFin}
         />
-        <FormControl sx={{ width: '25%', margin: 2 }}>
-            <InputLabel id="rub">Rubrique</InputLabel>
-            <Select
-                labelId="rub"
-                id="rub"
-                value={rubriqueSelected}
-                onChange={handleChangeRubrique}
-                label="Rubrique"
+          <Box sx={{ margin: 2 }}>
+            <FormGroup 
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', // ✅ Grid responsive
+                gap: 1, // Espacement entre les éléments
+                maxWidth: '100%'
+              }}
             >
-                <MenuItem aria-label="None" value="" >
-                    <em>Choisir une rubrique</em>
-                </MenuItem>
-                {rubriquesDisponible.map(rubrique => (
-                    <MenuItem key={rubrique.id} value={rubrique.designation}>
-                        {rubrique.designation}
-                    </MenuItem>
-                ))}
-            </Select>
-        </FormControl>
+              {rubriquesDisponible.map(rubrique => (
+                <FormControlLabel 
+                  key={rubrique.id}
+                  sx={{
+                    margin: 0, // ✅ Supprimer la marge par défaut
+                    whiteSpace: 'nowrap' // ✅ Éviter le retour à la ligne du texte
+                  }}
+                  control={
+                    <Checkbox 
+                      value={rubrique.designation}
+                      checked={rubriquesSelectionnees.includes(rubrique.designation)}
+                      onChange={onChangeCheckBox}
+                      size="small" // ✅ Checkbox plus petite pour économiser l'espace
+                    />
+                  } 
+                  label={rubrique.designation}
+                />
+              ))}
+            </FormGroup>
+        </Box>
+        
+        {/* ✅ Affichage des rubriques sélectionnées pour debug */}
+        {rubriquesSelectionnees.length > 0 && (
+          <Box sx={{ margin: 2 }}>
+            <strong>Rubriques sélectionnées:</strong> {rubriquesSelectionnees.join(', ')}
+          </Box>
+        )}
+        
         <Box>
           {/* <Link component={'a'} style={{ textDecoration: 'none', cursor: 'pointer' }} onClick={masquerPrescriteursAZero}>
             masquer les prescripteurs à 0
           </Link> */}
         </Box>
         <Box sx={{ margin: 2, height: '5vh' }}>
-          {/* <CustomTitleH2>Rubrique {rubriqueSelected}</CustomTitleH2> */}
-          <TableStatesPrescribers data={data} rubriqueSelected={rubriqueSelected} setData={setData} masquerPrescriteursAZero={masquerPrescriteursAZero} />
+          <TableStatesPrescribers 
+            data={data} 
+            rubriqueSelected={rubriquesSelectionnees.join(', ')} // ✅ Passer toutes les rubriques sélectionnées
+            setData={setData} 
+            masquerPrescriteursAZero={masquerPrescriteursAZero} 
+          />
         </Box>
       </Container>
     </Box>

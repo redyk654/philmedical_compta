@@ -3,7 +3,7 @@ import { CustomContext } from '../../shared/contexts/CustomContext';
 import { convertDate, formaterNombre } from '../../shared/functions/functions';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 
-export default function PrintRubrique({ rubriques }) {
+export default function PrintRubrique({ rubriques, printTitle }) {
 
     const { dateDebut,
             dateFin,
@@ -17,7 +17,7 @@ export default function PrintRubrique({ rubriques }) {
         <div className='d-flex justify-content-between flex-column'>
             <div>
                 <h3 className='text-center text-uppercase'>
-                    Rapport des revenus par rubrique
+                    Rapport des revenus de <strong>{printTitle}</strong>
                 </h3>
             </div>
             <div className='mt-3'>

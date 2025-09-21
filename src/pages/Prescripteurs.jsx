@@ -74,6 +74,7 @@ export default function Prescripteurs() {
 
   useEffect(() => {
     setAlertMessage('');
+    setData([])
     if (dateDebut && heureDebut && dateFin && heureFin && rubriquesSelectionnees.length > 0 && rubriquesDisponible.length > 0) {      
       getStatsPrescripteurs();
     }

@@ -7,6 +7,7 @@ import DetailsRubriqueTable from './DetailsRubriqueTable';
 import CloseIcon from '@mui/icons-material/Close';
 import { useReactToPrint } from 'react-to-print';
 import PrintDetailsRubrique from './PrintDetailsRubrique';
+import { formaterNombre } from '../../shared/functions/functions';
 
 export default function ModalDetails({ isModalDetails, handleCloseModalDetails, rubriqueSelected }) {
 
@@ -21,13 +22,18 @@ export default function ModalDetails({ isModalDetails, handleCloseModalDetails, 
     }, [isModalDetails])
 
     const getDetailsRubrique = async () => {
+        setDetailsRubrique([])
         setIsLoadingData(true)
         const response = await fetchDetailsRubrique(rubriqueSelected.id, dateDebut, dateFin, heureDebut, heureFin);
+        // console.log(response, rubriqueSelected);
+        
         if (response) {
             setDetailsRubrique(response)
             setIsLoadingData(false)
         }
     }
+
+    const totalNet = detailsRubrique.reduce((acc, curr) => acc + parseInt(curr.montant), 0);
 
     const handlePrint = useReactToPrint({ contentRef });
 
@@ -48,6 +54,8 @@ export default function ModalDetails({ isModalDetails, handleCloseModalDetails, 
             </div>
             <Typography className='fw-bold' variant="h6">
                 Détails de la rubrique <strong>{rubriqueSelected?.rubrique?.toUpperCase()}</strong>
+                <p>Motant Total : <span className='fw-bold'>{totalNet}</span></p>
+                <p>Total Net : <span className='fw-bold'>{rubriqueSelected?.montant}</span></p>
             </Typography>
             {isLoadingData ? (
                 <Typography className='m-5 text-center' variant="h6">

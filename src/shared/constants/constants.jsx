@@ -1,5 +1,7 @@
-const serverPath = 'http://serveur/hdmbanga/';
+// const serverPath = 'http://serveur/hdmbanga/';
 // const serverPath = 'http://localhost:8080/';
+const serverPath = 'https://philapp.alwaysdata.net/backend-philapp/'
+
 
 export const dnsPath = serverPath;
 

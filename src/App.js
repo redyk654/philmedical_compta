@@ -10,6 +10,8 @@ import { pathsOfUrls } from './shared/constants/constants';
 import Prescripteurs from './pages/Prescripteurs';
 import DetailsPrescripteur from './pages/DetailsPrescripteur';
 import PrescripteursManager from './pages/PrescripteursManager';
+import PrescripteursConfig from './pages/PrescripteursConfig';
+import RubriquesConfig from './pages/RubriquesConfig';
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
         <Route path={`${pathsOfUrls.prescripteurs}`} element={<Prescripteurs />} />
         <Route path={`${pathsOfUrls.prescripteurs}/${pathsOfUrls.detailsPrescriber}`} element={<DetailsPrescripteur />} />
         <Route path={`${pathsOfUrls.prescripteursManager}`} element={<PrescripteursManager />} />
+        <Route path={`${pathsOfUrls.prescripteursConfig}`} element={<PrescripteursConfig />} />
+        <Route path={`${pathsOfUrls.rubriquesConfig}`} element={<RubriquesConfig />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>

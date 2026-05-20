@@ -6,6 +6,8 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MedicationLiquidIcon from '@mui/icons-material/MedicationLiquid';
 import EngineeringIcon from '@mui/icons-material/Engineering';
+import TuneIcon from '@mui/icons-material/Tune';
+import TableChartIcon from '@mui/icons-material/TableChart';
 import { pathsOfUrls } from '../../shared/constants/constants';
 import NavigationItem from './NavigationItem';
 
@@ -45,6 +47,18 @@ export default function DrawerList({ toggleDrawer }) {
                 icon={<EngineeringIcon />}
                 label="Gestion des prescripteurs"
                 isActive={location.pathname.toLowerCase() === pathsOfUrls.layoutNavBar + pathsOfUrls.prescripteursManager}
+            />
+            <NavigationItem
+                to={`${pathsOfUrls.prescripteursConfig}`}
+                icon={<TuneIcon />}
+                label="Config prescripteurs"
+                isActive={location.pathname.toLowerCase() === pathsOfUrls.layoutNavBar + pathsOfUrls.prescripteursConfig}
+            />
+            <NavigationItem
+                to={`${pathsOfUrls.rubriquesConfig}`}
+                icon={<TableChartIcon />}
+                label="Config rubriques"
+                isActive={location.pathname.toLowerCase() === pathsOfUrls.layoutNavBar + pathsOfUrls.rubriquesConfig}
             />
             <Divider />
             <ListItem disablePadding>

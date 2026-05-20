@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
-import { Box, Container, IconButton, Tooltip } from '@mui/material';
+import { Box, Container, IconButton, TextField, Tooltip } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import CustomTitle from '../shared/components/CustomTitle';
 import CustomTitleH2 from '../shared/components/CustomTitleH2';
@@ -38,6 +38,7 @@ export default function Comptable() {
     const [isLoadingData, setIsLoadingData] = useState(false);
     const [isModalGrandGroupe, setIsModalGrandGroupe] = useState(false);
     const [isModalDetails, setIsModalDetails] = useState(false)
+    const [rubriqueSearch, setRubriqueSearch] = useState('');
 
     const handleOpenModalGrandGroupe = () => setIsModalGrandGroupe(true);
 
@@ -203,6 +204,10 @@ export default function Comptable() {
         // console.log(data);
         setRubriques(rubriques.filter(rubrique => parseInt(rubrique.montant) > 0));
     }
+
+    const filteredRubriques = rubriques.filter((rubrique) =>
+        String(rubrique.rubrique || '').toLowerCase().includes(rubriqueSearch.toLowerCase())
+    );
     
     return (
         <Box sx={{ padding: 0 }}>
@@ -233,11 +238,20 @@ export default function Comptable() {
                         </IconButton>
                     </Tooltip>
                 </CustomTitleH2>
+                <Box sx={{ mb: 2 }}>
+                    <TextField
+                        fullWidth
+                        size="small"
+                        label="Rechercher une rubrique"
+                        value={rubriqueSearch}
+                        onChange={(e) => setRubriqueSearch(e.target.value)}
+                    />
+                </Box>
                 {isLoadingData ? (
                     <CustomizedLoader />
                 ) : (
                     <RubriqueTable
-                        rubriques={rubriques}
+                        rubriques={filteredRubriques}
                         handleOpenModalDetails={handleOpenModalDetails}
                         masquerRubriquesAZero={masquerRubriquesAZero}
                     />

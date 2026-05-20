@@ -36,6 +36,8 @@ export default function EditRubrique() {
     const [newActe, setNewActe] = useState({ designation: '', prix: 0 });
     const [helperError, setHelperError] = useState('');
     const [isModalDelete, setIsModalDelete] = useState(false);
+    const [isModalDeleteActe, setIsModalDeleteActe] = useState(false);
+    const [acteToDelete, setActeToDelete] = useState(null);
 
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
@@ -92,6 +94,16 @@ export default function EditRubrique() {
 
     const handleCloseModalDelete = () => {
         setIsModalDelete(false)
+    }
+
+    const handleOpenModalDeleteActe = (acte) => {
+        setActeToDelete(acte);
+        setIsModalDeleteActe(true);
+    }
+
+    const handleCloseModalDeleteActe = () => {
+        setActeToDelete(null);
+        setIsModalDeleteActe(false);
     }
 
     useEffect(() => {
@@ -208,12 +220,14 @@ export default function EditRubrique() {
         }
     }
 
-    const deleteActe = async (id) => {
-        const url = `${dnsPath}gestion_rubriques.php?delete_acte&id=${id}`;
+    const deleteActe = async () => {
+        if (!acteToDelete?.id) return;
+        const url = `${dnsPath}gestion_rubriques.php?delete_acte&id=${acteToDelete.id}`;
         try {
             const res = await postRequest(url);
             if (res.message === 'success') {
                 fetchListeActes();
+                handleCloseModalDeleteActe();
             }
         } catch (error) {
             console.error('Error deleting acte:', error);
@@ -264,7 +278,7 @@ export default function EditRubrique() {
                     handleToggle={handleToggle}
                     handleToggleAll={handleToggleAll}
                     numberOfChecked={numberOfChecked}
-                    deleteActe={deleteActe}
+                    deleteActe={handleOpenModalDeleteActe}
                 />
             </Grid>
             <Grid item>
@@ -311,7 +325,7 @@ export default function EditRubrique() {
                     handleToggle={handleToggle}
                     handleToggleAll={handleToggleAll}
                     numberOfChecked={numberOfChecked}
-                    deleteActe={deleteActe}
+                    deleteActe={handleOpenModalDeleteActe}
                 />
             </Grid>
         </Grid>
@@ -382,7 +396,7 @@ export default function EditRubrique() {
                     ALERTE
                 </CustomTitleH2>
                 <p>
-                    La suppression d'une rubrique est irreversible. Voulez-vous continuez ?
+                    La suppression d'une rubrique est irréversible. Voulez-vous continuer ?
                 </p>
                 <Box component='div' className='d-flex justify-content-around align-items-center'>
                     <Button color='primary' onClick={handleCloseModalDelete} size='large'>Annuler</Button>
@@ -390,7 +404,23 @@ export default function EditRubrique() {
                 </Box>
             </Box>
         </Modal>
+        <Modal
+            open={isModalDeleteActe}
+            onClose={handleCloseModalDeleteActe}
+        >
+            <Box sx={modalStyle}>
+                <CustomTitleH2>
+                    ALERTE
+                </CustomTitleH2>
+                <p>
+                    La suppression de l'acte <strong>{acteToDelete?.designation}</strong> est irréversible. Voulez-vous continuer ?
+                </p>
+                <Box component='div' className='d-flex justify-content-around align-items-center'>
+                    <Button color='primary' onClick={handleCloseModalDeleteActe} size='large'>Annuler</Button>
+                    <Button color='error' variant='contained' onClick={deleteActe}>Supprimer</Button>
+                </Box>
+            </Box>
+        </Modal>
     </Container>
   );
 }
-

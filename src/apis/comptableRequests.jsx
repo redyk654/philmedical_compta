@@ -26,3 +26,29 @@ export const fetchDetailsRubrique = async (rubriqueId, dateDebut, dateFin, heure
         return []
     }
 }
+
+export const fetchRapportRubriqueParametre = async (rubriqueId, dateDebut, dateFin, heureDebut, heureFin) => {
+    const debut = dateDebut + ' ' + heureDebut;
+    const fin = dateFin + ' ' + heureFin;
+    const data = {
+        id_rubrique: rubriqueId,
+        debut: debut,
+        fin: fin
+    }
+
+    const url = `${dnsPath}gestion_rubriques.php?rapport_rubrique_parametre`;
+
+    try {
+        const response = await postRequest(url, data);
+        return await new Promise((resolve, reject) => {
+            if (response) {
+                resolve(response);
+            } else {
+                reject([]);
+            }
+        })
+    } catch (error) {
+        console.error('Error fetching rubrique commission report:', error)
+        return []
+    }
+}

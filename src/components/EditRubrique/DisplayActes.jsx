@@ -1,4 +1,4 @@
-import { Checkbox, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
+import { Checkbox, IconButton, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 import React from 'react'
 import { extraireCode } from '../../shared/functions/functions';
 import { Delete } from '@mui/icons-material';
@@ -39,8 +39,18 @@ export default function DisplayActes({ items, checked, handleToggle, deleteActe 
                     <ListItemIcon>
                         <ListItemText id={labelId} primary={`(${item.prix})`} />
                     </ListItemIcon>
-                    <ListItemIcon onClick={() => deleteActe(item.id)}>
-                        <Delete />
+                    <ListItemIcon>
+                        <IconButton
+                            edge="end"
+                            color="error"
+                            onClick={(event) => {
+                                event.preventDefault();
+                                event.stopPropagation();
+                                deleteActe(item);
+                            }}
+                        >
+                            <Delete />
+                        </IconButton>
                     </ListItemIcon>
                 </ListItemButton>
             );

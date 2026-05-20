@@ -2,7 +2,7 @@ import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePag
 import React, { useState } from 'react'
 import { extraireCode, formaterNombre } from '../../shared/functions/functions';
 
-export default function DetailsRubriqueTable({ detailsRubrique }) {
+export default function DetailsRubriqueTable({ detailsRubrique, mode = 'standard' }) {
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -23,28 +23,55 @@ export default function DetailsRubriqueTable({ detailsRubrique }) {
                 <TableHead>
                     <TableRow>
                         <TableCell className='fw-bold'>Designation</TableCell>
+                        {mode === 'commission' && <TableCell className='fw-bold'>Prix</TableCell>}
                         <TableCell className='fw-bold'>Qté</TableCell>
-                        <TableCell className='fw-bold'>Montant</TableCell>
+                        <TableCell className='fw-bold'>{mode === 'commission' ? 'Montant net' : 'Montant'}</TableCell>
+                        {mode === 'commission' && <TableCell className='fw-bold'>Commission</TableCell>}
+                        {mode === 'commission' && <TableCell className='fw-bold'>Montant calculé</TableCell>}
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {detailsRubrique.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
                         <TableRow
-                            key={row.id}
+                            key={row.id_service || row.id}
                         >
                             <TableCell>
-                                {extraireCode(row.designation)}
+                                {extraireCode(row.designation || row.service || '')}
                             </TableCell>
+                            {mode === 'commission' && (
+                                <TableCell>
+                                    <strong>
+                                        {formaterNombre(parseInt(row.prix || 0))}
+                                    </strong>
+                                </TableCell>
+                            )}
                             <TableCell>
                                 <strong>
-                                    {row.qte}
+                                    {row.qte || row.total_qte}
                                 </strong>
                             </TableCell>
                             <TableCell>
                                 <strong>
-                                    {formaterNombre(parseInt(row.montant))}
+                                    {formaterNombre(Math.round(parseFloat(mode === 'commission' ? row.montant_net || 0 : row.montant || 0)))}
                                 </strong>
                             </TableCell>
+                            {mode === 'commission' && (
+                                <TableCell>
+                                    <strong>
+                                        {row.type_valeur === 'montant_fixe'
+                                            ? formaterNombre(Math.round(parseFloat(row.valeur || 0)))
+                                            : `${row.valeur}%`
+                                        }
+                                    </strong>
+                                </TableCell>
+                            )}
+                            {mode === 'commission' && (
+                                <TableCell>
+                                    <strong>
+                                        {formaterNombre(Math.round(parseFloat(row.montant_calcule || 0)))}
+                                    </strong>
+                                </TableCell>
+                            )}
                         </TableRow>
                     ))}
                 </TableBody>
